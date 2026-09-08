@@ -22,10 +22,13 @@ Two APIs over the same core:
 
 Plus:
 
-- **CSS support.** Formatters support a `style` attribute, so parse a CSS string into a
-  style string.
-- **Composition.** The formatters API supports very few HTML elements, so we need a way to
-  create new elements by composing existing ones.
+- **CSS support.** Formatters honour a `style` attribute, so CSS should be writable the
+  way it is in HTML — as a string or as an object.
+- **Composition.** The formatters API renders seven tags — `div`, `span`, `ol`, `li`,
+  `table`, `tr`, `td` — so every other element has to be composed from those.
+- **Live objects.** An object logged inside a message stays inspectable and expandable
+  rather than stringified. It's the one thing this rendering target can do that plain
+  HTML can't, and it shapes the API: any argument might be data.
 
 ## Approach
 
@@ -34,9 +37,16 @@ tangled up with types.
 
 Phases: the function API first, then the HTML string API on top of it.
 
-But the first task is neither — it's writing **example usage** for the API we want.
-Fictional code, in the shape we'd like to write it, informed by the tests in the archived
-implementation. Everything else gets driven from those examples.
+The **example usage** leads: fictional code in the shape we'd like to write it, informed
+by the archived implementation. Everything else follows from it.
+
+`EXAMPLES.md` is scaffolding for that and will eventually be deleted, so nothing in `src/`
+may reference it. Restate a rule where it's implemented instead.
+
+## Working on it
+
+`src/` is the implementation, TypeScript, no build step yet. `npm run check` type-checks
+it (`tsc --noEmit`).
 
 ## Reference
 
@@ -49,3 +59,6 @@ devtools actually behaves today.
 `archive/` holds a previous, working implementation with tests. It's a **reference only**
 — useful because the problem is already solved once and the tests capture real behaviour.
 Not happy with how it turned out, and not tied to its API.
+
+It is deliberately **not in git** — untracked and gitignored, so a fresh clone won't have
+it. Never commit it.

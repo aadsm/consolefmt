@@ -1,0 +1,35 @@
+{
+  "name": "consolepro",
+  "version": "0.0.0",
+  "description": "Rich, styled content in the devtools console, via Custom Formatters.",
+  "keywords": [
+    "console",
+    "console-log",
+    "logging",
+    "debugging",
+    "devtools",
+    "chrome-devtools",
+    "styled-console",
+    "console-formatting",
+    "pretty-print",
+    "html",
+    "css"
+  ],
+  "author": "António Afonso",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aadsm/consolepro.git"
+  },
+  "homepage": "https://github.com/aadsm/consolepro#readme",
+  "bugs": {
+    "url": "https://github.com/aadsm/consolepro/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
