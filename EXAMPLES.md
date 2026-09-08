@@ -16,10 +16,39 @@ import { div, span } from "consolepro";
 
 console.log(span("hello"));
 console.log(span({ color: "red" }, "hello"));
+console.log(span({ height: "1px", background: "#ccc" }));   // attributes only, no children
 ```
 
-First argument is the style when it's a plain object. Not `{ style: {...} }` — style is
-effectively the only attribute the formatters API honours, so it shouldn't need a wrapper.
+The first argument is the element's attributes when it's a plain object, and a child
+otherwise. Attributes are CSS properties, written flat. `style` is accepted too, as a
+string or an object:
+
+```js
+console.log(span({ style: "color: red" }, "hello"));
+console.log(span({ style: { color: "red" } }, "hello"));
+```
+
+An object as the *first* child is the one shape this can't read, since that slot is taken.
+Pass empty attributes:
+
+```js
+console.log(span({}, user));   // or object(user)
+```
+
+### element()
+
+`div`, `span` and the rest are wrappers over a generic `element()`:
+
+```js
+import { element } from "consolepro";
+
+element("span", { color: "red" }, "hello");
+
+const span = (...args) => element("span", ...args);
+```
+
+Seven tags are real — `div`, `span`, `ol`, `li`, `table`, `tr`, `td`. Everything else is
+composed from those.
 
 ### Nesting
 
@@ -72,9 +101,12 @@ const section = (name, ...children) => div(title(name), ...children);
 
 ### Children
 
+Every argument is exactly one child, whatever its type. Arrays don't flatten.
+
 ```js
 span("a", 42, div("b"))        // strings, numbers, elements
-span(items)                    // an array flattens into the children
+span(...items)                 // spread a list into children
+span(items)                    // the array itself, live and expandable
 span(cond ? span("x") : null)  // null and undefined are dropped
 ```
 
@@ -136,8 +168,6 @@ const pill = (message, color = "white") => html`
 
 ## Open
 
-- **Style as first arg vs. named.** `span({ color: "red" }, "x")` reads well until you want
-  a non-style attribute. Is there ever one worth supporting?
 - **Custom elements as plain functions** covers composition with no machinery. Is anything
   lost versus a registry (`define("pill", …)`) that the HTML API could then use as
   `<pill>`? That's the one thing functions can't give the string API.
