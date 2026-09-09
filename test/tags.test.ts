@@ -5,7 +5,7 @@ import { nativeTagNames } from "../src/elements.ts";
 import * as tags from "../src/tags.ts";
 import {
   b, code, del, div, em, extend, h1, i, ins, kbd, li, mark, ol, s, samp,
-  span, strong, th, u, ul,
+  span, strong, th, u, ul, hr, br, img,
 } from "../src/tags.ts";
 
 test("there is one function per native tag, and nothing else", () => {
@@ -16,6 +16,7 @@ test("there is one function per native tag, and nothing else", () => {
     "ins", "u", "del", "s", "sub", "sup",
     "h1", "h2", "h3", "h4", "h5", "h6",
     "p", "pre", "blockquote", "ul", "th",
+    "hr", "br", "img",
   ];
 
   assert.deepEqual(exported, [...nativeTagNames, ...composed, "extend"].sort());
@@ -129,4 +130,48 @@ test("composed elements take attributes and children like any tag", () => {
   assert.equal(el.attributes["color"], "red");
   assert.equal(el.attributes["fontSize"], "2em");
   assert.deepEqual(el.children, ["Title"]);
+});
+
+test("hr is a bordered div with no children", () => {
+  const el = hr();
+
+  assert.equal(el.name, "div");
+  assert.deepEqual(el.children, []);
+  assert.equal(el.attributes["borderWidth"], "1px");
+  assert.equal(el.attributes["borderStyle"], "inset");
+});
+
+test("br is an empty block", () => {
+  const el = br();
+
+  assert.equal(el.name, "div");
+  assert.deepEqual(el.children, []);
+  assert.equal(el.attributes["height"], "0");
+});
+
+test("img turns src into a background image", () => {
+  const el = img({ src: "cat.png", width: "80px", height: "60px" });
+
+  assert.equal(el.name, "div");
+  assert.equal(el.attributes["backgroundImage"], 'url("cat.png")');
+  assert.equal(el.attributes["backgroundSize"], "contain");
+  assert.equal(el.attributes["width"], "80px");
+  assert.equal(el.attributes["height"], "60px");
+  assert.equal("src" in el.attributes, false);
+});
+
+test("img quotes a src containing quotes or parentheses", () => {
+  const el = img({ src: 'a"b(c).png', width: "10px", height: "10px" });
+
+  assert.equal(el.attributes["backgroundImage"], 'url("a\\"b(c).png")');
+});
+
+test("img without a size throws, naming what's missing", () => {
+  assert.throws(() => img({ src: "cat.png" }), /needs a width and a height/);
+  assert.throws(() => img({ src: "cat.png", width: "10px" }), /needs a height/);
+  assert.throws(() => img({ src: "cat.png", height: "10px" }), /needs a width/);
+});
+
+test("img without a src throws", () => {
+  assert.throws(() => img({ width: "10px", height: "10px" }), /needs a src/);
 });

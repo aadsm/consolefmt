@@ -135,3 +135,50 @@ export const blockquote = div.extend({
 export const ul = ol.extend({ listStyleType: "disc" });
 
 export const th = td.extend({ fontWeight: "bold" });
+
+export const hr = div.extend({
+  color: "gray",
+  borderStyle: "inset",
+  borderWidth: "1px",
+  marginTop: "0.5em",
+  marginBottom: "0.5em",
+  marginLeft: "auto",
+  marginRight: "auto",
+  overflow: "hidden",
+});
+
+/** A block with no content breaks the line. */
+export const br = div.extend({ height: "0" });
+
+/**
+ * There is no img tag, so an image is a div with a background. `src` is the
+ * element's own attribute. A background can't size itself, so width and
+ * height are required.
+ */
+export const img: Tag = asTag((...args) => {
+  const [attributes, children] = readArguments(args);
+  const { src, ...style } = attributes;
+
+  if (src === undefined) {
+    throw new Error("consolepro: img needs a src.");
+  }
+
+  const missing = (["width", "height"] as const).filter((name) => !(name in style));
+  if (missing.length > 0) {
+    throw new Error(
+      `consolepro: img needs a ${missing.join(" and a ")} — a background image ` +
+        `can't size itself, so without one it renders nothing.`,
+    );
+  }
+
+  return div(
+    {
+      display: "inline-block",
+      backgroundImage: `url(${JSON.stringify(String(src))})`,
+      backgroundSize: "contain",
+      backgroundRepeat: "no-repeat",
+      ...style,
+    },
+    ...children,
+  );
+});
