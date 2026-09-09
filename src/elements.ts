@@ -45,10 +45,16 @@ export class Element {
 export function element(name: string, ...args: readonly Child[]): Element {
   assertNativeTagName(name);
 
+  const [attributes, children] = readArguments(args);
+  return new Element(name, attributes, children);
+}
+
+/** Splits a call's arguments into its attributes and its children. */
+export function readArguments(
+  args: readonly Child[],
+): [Attributes, readonly Child[]] {
   const [first, ...rest] = args;
-  return isAttributes(first)
-    ? new Element(name, first, rest)
-    : new Element(name, {}, args);
+  return isAttributes(first) ? [first, rest] : [{}, args];
 }
 
 /**
