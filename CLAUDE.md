@@ -48,6 +48,31 @@ may reference it. Restate a rule where it's implemented instead.
 `src/` is the implementation, TypeScript, no build step yet. `npm run check` type-checks
 it (`tsc --noEmit`).
 
+## The screenshots
+
+Every image in `README.md` and `docs/gallery.md` is a real devtools console, driven
+headlessly by `tools/screenshots.ts`. It uses Puppeteer's bundled Chrome rather than
+whatever is installed, so a given commit renders the same images years later.
+
+```
+node tools/screenshots.ts            # docs/images/
+node tools/screenshots.ts --dark     # docs/images/dark/
+node tools/screenshots.ts --gallery  # docs/images/gallery/
+```
+
+The first two get their snippets from `tools/screenshots.ts` itself, except the hero,
+which is composed from gallery examples: `HERO` names them by slug, each one runs in its
+own scope, and the shot is written to `docs/images/hero.png`. It has no dark twin, because
+the examples pick their colours against a light console. `--gallery` reads
+`docs/gallery.md`, one snippet per `##` heading, and writes `docs/images/gallery/<slug>.png`
+from the heading's slug. That markdown is the source, not a transcription: to change an
+example, edit its code block and re-run.
+
+A run rewrites every image in the target directory. Panel-framed shots include the
+prompt's blinking caret, so files whose content didn't change still come back modified,
+by a few dozen pixels. Revert the ones you didn't mean to touch, so a diff only carries
+what actually moved.
+
 ## Reference
 
 `docs/chrome-custom-formatters.md` — the Chrome team's spec. Read it before assuming what
