@@ -12,7 +12,12 @@ export interface Tag {
   extend(defaults: Attributes): Tag;
 }
 
-function asTag(call: (...args: readonly Child[]) => Element): Tag {
+/**
+ * Makes a tag out of a function that builds an element — for a tag that reads
+ * its arguments its own way, rather than one `extend` can express. What it
+ * adds is `.extend`, so a tag built this way composes like any other.
+ */
+export function asTag(call: (...args: readonly Child[]) => Element): Tag {
   const tag = call as Tag;
   tag.extend = (defaults) => extend(tag, defaults);
   return tag;
