@@ -58,12 +58,6 @@ Custom formatters ship in Chrome and Edge, but behind a setting. Open devtools,
 then **Settings → Console → Enable custom formatters**, and reload the page.
 Nothing renders until you do.
 
-```js
-import { install } from "consolepro";
-
-install();
-```
-
 ## Tags are functions
 
 What consolepro renders is HTML, written as function calls rather than as

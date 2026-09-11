@@ -176,7 +176,6 @@ async function serveSource(): Promise<{ url: string; close(): void }> {
     <title>consolepro</title>
     <script type="module">
       import * as consolepro from "/src/index.ts";
-      consolepro.install();
       window.consolepro = consolepro;
     </script>`;
 

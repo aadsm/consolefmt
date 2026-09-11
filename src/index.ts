@@ -10,7 +10,6 @@
 export * from "./tags.ts";
 export { element, Element } from "./elements.ts";
 export { grid } from "./grid.ts";
-export { install } from "./formatter.ts";
 
 export type { Attributes, Child, NativeTagName, Style } from "./elements.ts";
 export type { Tag } from "./tags.ts";

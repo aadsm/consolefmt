@@ -1,7 +1,12 @@
 /**
  * The element value produced by `element()`, and the rules for reading its
  * arguments.
+ *
+ * The import of the formatter is circular: it reads elements back. That is safe
+ * because nothing here touches it until an element is built.
  */
+
+import { ensureInstalled } from "./formatter.ts";
 
 /** The only tags the Custom Formatters API renders. Everything else is composed. */
 export const nativeTagNames = ["div", "span", "ol", "li", "table", "tr", "td"] as const;
@@ -29,6 +34,8 @@ export class Element {
   readonly children: readonly PresentChild[];
 
   constructor(name: string, attributes: Attributes, children: readonly Child[]) {
+    ensureInstalled();
+
     this.name = name;
     this.attributes = attributes;
     this.children = children.filter(isPresent);

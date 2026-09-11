@@ -29,8 +29,17 @@ export const formatter = {
   },
 };
 
-/** Registers the formatter. Later formatters get a turn only if ours returns null. */
-export function install(): void {
+let installed = false;
+
+/**
+ * Registers the formatter, once. Called when the first element is built, which
+ * is the last moment it can be in place before anything is logged. Later
+ * formatters get a turn only if ours returns null.
+ */
+export function ensureInstalled(): void {
+  if (installed) return;
+  installed = true;
+
   const page = globalThis as { devtoolsFormatters?: unknown[] };
   page.devtoolsFormatters = [formatter, ...(page.devtoolsFormatters ?? [])];
 }
