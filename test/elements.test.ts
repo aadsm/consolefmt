@@ -23,7 +23,7 @@ test("every native tag is accepted", () => {
 test("any other tag throws, and says what to compose from", () => {
   assert.throws(() => element("h1", "Title"), (error: Error) => {
     assert.match(error.message, /<h1>/);
-    assert.match(error.message, /div, span, ol, li, table, tr, td/);
+    assert.match(error.message, new RegExp(nativeTagNames.join(", ")));
     return true;
   });
 });
