@@ -114,6 +114,28 @@ async function galleryScenes(): Promise<Record<string, Snippet>> {
   );
 }
 
+/**
+ * The README's hero, named by the gallery slugs it's made of rather than
+ * written out again, so the two can't drift apart.
+ */
+const HERO = ["flame-graph", "event-loop-trace", "compositing-layers", "railroad-diagram"];
+
+async function heroScene(): Promise<Snippet> {
+  const blocks = await galleryBlocks();
+
+  // Each example gets its own scope: they all declare a `label`, and several
+  // share names for their helpers.
+  const code = HERO.map((slug) => {
+    const block = blocks[slug];
+    if (block === undefined) {
+      throw new Error(`consolepro: the gallery has no "${slug}" for the hero.`);
+    }
+    return `(() => {\n${block}\n})();`;
+  }).join("\n");
+
+  return { code, panel: true };
+}
+
 async function main(): Promise<void> {
   const dark = process.argv.includes("--dark");
   const gallery = process.argv.includes("--gallery");
@@ -121,7 +143,12 @@ async function main(): Promise<void> {
     gallery ? "gallery" : dark ? "dark" : "");
   await mkdir(outputDir, { recursive: true });
 
-  const scenes = gallery ? await galleryScenes() : snippets;
+  // No dark hero: the gallery examples pick their own colours against a light
+  // console, so on a dark one the layer legend goes dark on dark. It needs the
+  // examples reworked, not the theme flipped.
+  const scenes = gallery
+    ? await galleryScenes()
+    : { ...(dark ? {} : { hero: await heroScene() }), ...snippets };
   const server = await serveSource();
   const console_ = await openDevtoolsConsole({
     url: server.url,
