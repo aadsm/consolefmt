@@ -3,6 +3,7 @@
  *
  *     node tools/screenshots.ts            # docs/images/
  *     node tools/screenshots.ts --dark     # docs/images/dark/
+ *     node tools/screenshots.ts --gallery  # docs/images/gallery/, from docs/gallery.md
  *
  * Each snippet is run in a page that has consolepro loaded, and what the
  * console printed for it is written out as a cropped PNG.
@@ -89,12 +90,38 @@ const snippets: Record<string, Snippet> = {
   ` },
 };
 
+/**
+ * The gallery's snippets live in its own markdown, one per `##` heading, so
+ * the page a reader sees is the same text that gets run. Keyed by the slug
+ * the heading makes, which is also the name its image is written under.
+ */
+async function galleryBlocks(): Promise<Record<string, string>> {
+  const markdown = await readFile(join(root, "docs/gallery.md"), "utf8");
+  const blocks: Record<string, string> = {};
+
+  for (const [, title, code] of markdown.matchAll(
+    /^## (.+)$[\s\S]*?```js\n([\s\S]*?)```/gm,
+  )) {
+    blocks[title!.toLowerCase().replaceAll(" ", "-")] = code ?? "";
+  }
+  return blocks;
+}
+
+async function galleryScenes(): Promise<Record<string, Snippet>> {
+  return Object.fromEntries(
+    Object.entries(await galleryBlocks())
+      .map(([slug, code]) => [slug, { code, panel: true }]),
+  );
+}
+
 async function main(): Promise<void> {
   const dark = process.argv.includes("--dark");
-  const outputDir = join(root, "docs/images", dark ? "dark" : "");
+  const gallery = process.argv.includes("--gallery");
+  const outputDir = join(root, "docs/images",
+    gallery ? "gallery" : dark ? "dark" : "");
   await mkdir(outputDir, { recursive: true });
 
-  const scenes = snippets;
+  const scenes = gallery ? await galleryScenes() : snippets;
   const server = await serveSource();
   const console_ = await openDevtoolsConsole({
     url: server.url,
