@@ -15,7 +15,7 @@
     "html",
     "css"
   ],
-  "author": "António Afonso",
+  "author": "Ant\u00f3nio Afonso",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,10 +28,12 @@
   "type": "module",
   "scripts": {
     "check": "tsc --noEmit",
-    "test": "node --test \"test/**/*.test.ts\""
+    "test": "node --test \"test/**/*.test.ts\"",
+    "screenshots": "node tools/screenshots.ts"
   },
   "devDependencies": {
     "@types/node": "^26.5.0",
+    "puppeteer": "25.10.0",
     "typescript": "^5.6.0"
   }
 }
