@@ -34,10 +34,15 @@ const snippets: Record<string, Snippet> = {
   // `undefined` after it, which is what makes this one worth the prompt.
   hello: {
     panel: true,
+    // A line typed at the prompt can't import, so the shot needs the tags
+    // already in scope, as they'd be on a page that had imported them.
+    code: `Object.assign(window, consolepro);`,
     prompt: `span({ color: "crimson", fontWeight: "bold" }, "hello")`,
   },
 
   badges: { code: `
+    const { span } = consolepro;
+
     const badge = (text, color) => span({
       color: "white", background: color, fontWeight: "bold",
       padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
@@ -49,6 +54,8 @@ const snippets: Record<string, Snippet> = {
   ` },
 
   grid: { code: `
+    const { grid } = consolepro;
+
     const { row, cell } = grid;
     const box = cell.extend({ padding: "3px 10px", background: "white" });
     const head = box.extend({ fontWeight: "bold", background: "#f4f4f4" });
@@ -66,6 +73,8 @@ const snippets: Record<string, Snippet> = {
   ` },
 
   card: { code: `
+    const { div, span } = consolepro;
+
     const badge = (text, color) => span({
       color: "white", background: color, fontWeight: "bold",
       padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
@@ -177,13 +186,9 @@ async function serveSource(): Promise<{ url: string; close(): void }> {
     <meta charset="utf-8">
     <title>consolepro</title>
     <script type="module">
-      import * as tags from "/src/tags.ts";
-      import { element } from "/src/elements.ts";
-      import { grid } from "/src/grid.ts";
-      import { install } from "/src/formatter.ts";
-
-      install();
-      Object.assign(window, tags, { element, grid });
+      import * as consolepro from "/src/index.ts";
+      consolepro.install();
+      window.consolepro = consolepro;
     </script>`;
 
   const server = createServer(async (request, response) => {

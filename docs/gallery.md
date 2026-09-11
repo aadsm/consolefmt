@@ -4,6 +4,9 @@ The consolepro library can draw more than text. Flame graphs, network
 waterfalls, a layer inspector tilted in 3D, a state machine, a bitmap of a
 typed array. All of it powered by `console.log` and devtools' Custom Formatters.
 
+Each example takes the names it uses from `consolepro`, the module once you have
+imported it.
+
 Every image is the output of the code above it, captured from a real console.
 
 ## Session log
@@ -19,6 +22,8 @@ a card with the live object still inside it.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 // An ink and a wash of the same hue, so a third segment reads as context
 // rather than a second label.
 const NAV  = { ink: "#8e44ad", wash: "#f4ecf9" };
@@ -109,6 +114,8 @@ A frame's width is its share of its parent, so nesting does the arithmetic.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "6px" }, t);
 
@@ -152,6 +159,8 @@ console.log(div(label("profile · 420ms"),
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "6px" }, t);
 
@@ -192,6 +201,8 @@ Drawn on a canvas at 2x, then handed over as a data URI.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "6px" }, t);
 
@@ -250,6 +261,8 @@ The third image is computed from the other two at log time.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "6px" }, t);
 
@@ -311,6 +324,8 @@ Bars placed by start time, split into timing phases.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -375,6 +390,8 @@ Nested flex, with flex-grow carrying the byte count.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -426,6 +443,8 @@ A four-column grid and a small tokeniser.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -482,6 +501,8 @@ The merge elbow is one border-radius on two borders.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -543,6 +564,8 @@ Arrowheads are clip-path triangles; a self-call is three borders and one rounded
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -636,6 +659,8 @@ Means as dots, 95% intervals as bars, coloured by whether they clear zero.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -689,6 +714,8 @@ Four nested rings, each with its values on its own edges.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -730,6 +757,8 @@ Canvas: mirrored bars, a tinted selection, a playhead with a triangle cap.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "7px" }, t);
 
@@ -781,6 +810,8 @@ An optional branch is an arc that leaves the line and rejoins it.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "9px" }, t);
 
@@ -846,6 +877,8 @@ Depth as indentation, cost as a bar on one shared scale.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "9px" }, t);
 
@@ -892,6 +925,8 @@ Why an object is still alive, with the leak flagged.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "9px" }, t);
 
@@ -940,6 +975,8 @@ Computes WCAG contrast from the hex and grades itself.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "9px" }, t);
 
@@ -1003,6 +1040,8 @@ many rectangles it actually covers.
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1059,6 +1098,8 @@ One linear-gradient with hard stops at the executed byte ranges. Note the explic
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1101,6 +1142,8 @@ Paint progress with the web-vitals marks underneath.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1135,6 +1178,8 @@ The reset edge is two strokes and one rounded corner; the active state carries a
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1242,6 +1287,8 @@ Canvas measures the real font, and the rules are placed over live HTML text at t
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1286,6 +1333,8 @@ Numbered line badges, a dashed outline with outline-offset, and the track sizes 
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1330,6 +1379,8 @@ Trend, colour and bar heights all derived from each row's own series.
 <summary>Code</summary>
 
 ```js
+const { div, span, grid } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1389,6 +1440,8 @@ baseline, and a table with the bars drawn into the cells.
 <summary>Code</summary>
 
 ```js
+const { div, span, grid } = consolepro;
+
 const SLATE = "#3d4756", INK = "#1f2937", MUTED = "#98a1ae", LINE = "#e3e8ee";
 const TEAL = "#0f9d76", BLUE = "#2f7fd4";
 const { row, cell } = grid;
@@ -1476,6 +1529,8 @@ Two objects in, classified same / changed / added at log time.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1535,6 +1590,8 @@ Bar size from duration; anything over 200ms labels itself in red. Absolutely-pos
 <summary>Code</summary>
 
 ```js
+const { div, span } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1579,6 +1636,8 @@ Tasks sized by duration against a frame budget drawn once.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1625,6 +1684,8 @@ Edges trim to each node's box, so vertical and diagonal links work too. The cycl
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 
@@ -1689,6 +1750,8 @@ One div per value, coloured by magnitude — a buffer you can look at.
 <summary>Code</summary>
 
 ```js
+const { div } = consolepro;
+
 const label = (t) => div({ fontSize: "10px", color: "#8a8a8a",
   textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "10px" }, t);
 

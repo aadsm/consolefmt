@@ -111,6 +111,9 @@ export interface DevtoolsConsole {
   /**
    * Runs `snippet` in the inspected page and writes a PNG of what the console
    * printed for it, cropped to the messages themselves.
+   *
+   * The snippet is a function body, called with whatever the page left on
+   * `globalThis.consolepro` as its `consolepro` argument.
    */
   capture(snippet: string, screenshotPath: string, options?: CaptureOptions): Promise<void>;
   close(): Promise<void>;
@@ -259,10 +262,14 @@ async function capture(
   if (snippet.trim() !== "") {
     const failure = await inspected.evaluate((code: string) => {
       try {
-        // Indirect eval, so the snippet runs in global scope and sees whatever
-        // the inspected page put there. Braced, so its declarations don't
-        // collide with the next snippet's.
-        (0, eval)(`{${code}}`);
+        // A snippet is a function body given the library as its one argument,
+        // which is how the examples are written: they take what they need from
+        // `consolepro` rather than reaching for globals. Indirect eval so it
+        // compiles in global scope, and the call frame keeps its declarations
+        // from colliding with the next snippet's.
+        const body = (0, eval)(`(function (consolepro) {${code}})`) as
+          (library: unknown) => void;
+        body((globalThis as { consolepro?: unknown }).consolepro);
         return null;
       } catch (error) {
         return String(error);

@@ -66,7 +66,10 @@ own scope, and the shot is written to `docs/images/hero.png`. It has no dark twi
 the examples pick their colours against a light console. `--gallery` reads
 `docs/gallery.md`, one snippet per `##` heading, and writes `docs/images/gallery/<slug>.png`
 from the heading's slug. That markdown is the source, not a transcription: to change an
-example, edit its code block and re-run.
+example, edit its code block and re-run. Each block is run as a function body with the
+library as its one argument, so it takes what it needs from `consolepro` and a
+block that reaches for a tag it did not name fails the run rather than quietly
+working.
 
 A run rewrites every image in the target directory. Panel-framed shots include the
 prompt's blinking caret, so files whose content didn't change still come back modified,
