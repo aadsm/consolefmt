@@ -1,3 +1,5 @@
 node_modules/
 archive/
 .vscode/
+.claude/settings.local.json
+.claude/worktrees/
