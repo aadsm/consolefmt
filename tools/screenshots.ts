@@ -50,7 +50,6 @@ const snippets: Record<string, Snippet> = {
 
     console.log(span(badge("READY", "#27ae60"), " server listening on :3000"));
     console.log(span(badge("SLOW", "#e67e22"), " GET /api/orders took 2.4s"));
-    console.log(span(badge("FAIL", "#c0392b"), " payment declined for order #8812"));
   ` },
 
   grid: { code: `
@@ -75,25 +74,15 @@ const snippets: Record<string, Snippet> = {
   card: { code: `
     const { div, span } = consolepro;
 
-    const badge = (text, color) => span({
-      color: "white", background: color, fontWeight: "bold",
-      padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
-    }, text);
-
     const order = { id: 8812, total: 42.5, items: ["hat", "scarf"] };
 
     console.log(
       // A hard-coded background needs a hard-coded colour with it: text
       // inherits the console's, which flips with the devtools theme.
-      div({ border: "1px solid #e0b4b4", borderLeft: "4px solid #c0392b",
-            borderRadius: "4px", padding: "8px 12px",
+      div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
             background: "#fdf6f6", color: "#5a2f2f" },
-        div({ marginBottom: "4px" },
-          badge("FAIL", "#c0392b"),
-          span({ fontWeight: "bold" }, " payment declined"),
-        ),
-        div({ color: "#7f4a4a" }, "card expired — retrying in 30s"),
-        div({ marginTop: "4px" }, span({ color: "#999" }, "order "), order),
+        div({ fontWeight: "bold" }, "payment declined"),
+        div(span({ color: "#8a8a8a" }, "order "), order),
       ),
     );
   ` },
