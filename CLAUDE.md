@@ -48,6 +48,8 @@ node tools/screenshots.ts --dark     # docs/images/dark/
 node tools/screenshots.ts --gallery  # docs/images/gallery/
 ```
 
+`--dark` is for looking at rather than for committing: nothing in the docs shows a dark console.
+
 Every shot comes from the markdown that shows it: `README.md` for the first two, `docs/gallery.md` for `--gallery`. A `##` section holding both a code block and an image is a shot. The code is the section's first block, the image names the file, and `?framed` on the image path puts the devtools panel around it instead of cropping to the message. A section with no image is prose, and a block after the image is commentary.
 
 That markdown is the source, not a transcription: to change an example, edit its code block and re-run. Each block runs inside a block of its own, so it has to take the names it uses from `consolepro` rather than from the block before it, and one that reaches for a tag it did not name fails the run rather than quietly working.
