@@ -1,58 +1,46 @@
 # consolepro
 
-Renders rich, styled content into the Chrome/Edge devtools console by registering a
-Custom Formatter (`window.devtoolsFormatters`).
+Renders rich, styled content into the Chrome/Edge devtools console by registering a Custom Formatter (`window.devtoolsFormatters`).
 
-## Why
+## What's here
 
-A wall of text in the devtools console makes it hard to tell what came from where.
-`console.log("%c…")` can style messages, but it's very restrictive and doesn't compose at
-all — you can't wrap a styled fragment in a function and reuse it.
+`src/` is the library:
 
-The Custom Formatters API was built for rendering structured types nicely (think Clojure
-values), but the mechanism is generic enough to print arbitrary HTML. This project
-leverages it to log console messages as HTML.
+- `elements.ts` builds an element and splits a call's arguments into attributes and children
+- `tags.ts` the tag functions, `extend`, and `asTag` for tags that read their arguments their own way
+- `grid.ts` the grid, carrying its own `row` and `cell`
+- `formatter.ts` turns an element into the JsonML devtools renders, and registers itself when the first element is built
+- `index.ts` the package entry point
 
-## Goals
+`test/` mirrors it, one file per module, run by `node --test`.
 
-Two APIs over the same core:
+`README.md` is the walkthrough and `docs/gallery.md` holds thirty worked examples. Both are the source their screenshots are generated from.
 
-1. **Function-based** — `div(table(tr(), tr()))`
-2. **HTML strings** — `"<div><table>…"`, built on top of the function API
+## Two constraints shape the API
 
-Plus:
+The formatters API renders seven tags, `div`, `span`, `ol`, `li`, `table`, `tr` and `td`, so every other element is composed from those.
 
-- **CSS support.** Formatters honour a `style` attribute, so CSS should be writable the
-  way it is in HTML — as a string or as an object.
-- **Composition.** The formatters API renders seven tags — `div`, `span`, `ol`, `li`,
-  `table`, `tr`, `td` — so every other element has to be composed from those.
-- **Live objects.** An object logged inside a message stays inspectable and expandable
-  rather than stringified. It's the one thing this rendering target can do that plain
-  HTML can't, and it shapes the API: any argument might be data.
-
-## Approach
-
-Written in TypeScript. `EXAMPLES.md` stays plain JS — designing the usage API shouldn't be
-tangled up with types.
-
-Phases: the function API first, then the HTML string API on top of it.
-
-The **example usage** leads: fictional code in the shape we'd like to write it, informed
-by the archived implementation. Everything else follows from it.
-
-`EXAMPLES.md` is scaffolding for that and will eventually be deleted, so nothing in `src/`
-may reference it. Restate a rule where it's implemented instead.
+An object logged inside a message stays inspectable and expandable rather than stringified. It is the one thing this rendering target can do that plain HTML can't, and it means any argument might be data.
 
 ## Working on it
 
-`src/` is the implementation, TypeScript, no build step yet. `npm run check` type-checks
-it (`tsc --noEmit`).
+```
+npm run check    # tsc --noEmit, over src, test and tools
+npm test         # node --test
+npm run build    # dist/
+```
+
+Node runs the TypeScript directly by stripping the types, so `src/` has no compile step and imports name the real files (`./tags.ts`). Only erasable syntax works: no enum, namespace, parameter properties or decorators. `erasableSyntaxOnly` turns those into a `npm run check` failure rather than a runtime one.
+
+## The build
+
+`tools/build.ts` writes `dist/`, which is gitignored and built at publish time by `prepublishOnly`. esbuild emits `consolepro.js`, a classic script defining a `consolepro` global, and `consolepro.esm.js`, the module. tsc emits the declarations into `dist/types/`.
+
+The README pins its CDN URLs to a version. `npm version` runs `tools/sync-readme-version.ts`, which rewrites them and stages the file so it rides in the version commit.
 
 ## The screenshots
 
-Every image in `README.md` and `docs/gallery.md` is a real devtools console, driven
-headlessly by `tools/screenshots.ts`. It uses Puppeteer's bundled Chrome rather than
-whatever is installed, so a given commit renders the same images years later.
+Every image in `README.md` and `docs/gallery.md` is a real devtools console, driven headlessly by `tools/screenshots.ts`. It uses Puppeteer's bundled Chrome rather than whatever is installed, so a given commit renders the same images years later. Everything devtools-specific lives behind `openDevtoolsConsole` in `tools/devtools-console.ts`.
 
 ```
 node tools/screenshots.ts            # docs/images/
@@ -60,33 +48,22 @@ node tools/screenshots.ts --dark     # docs/images/dark/
 node tools/screenshots.ts --gallery  # docs/images/gallery/
 ```
 
-The first two get their snippets from `tools/screenshots.ts` itself, except the hero,
-which is composed from gallery examples: `HERO` names them by slug, each one runs in its
-own scope, and the shot is written to `docs/images/hero.png`. It has no dark twin, because
-the examples pick their colours against a light console. `--gallery` reads
-`docs/gallery.md`, one snippet per `##` heading, and writes `docs/images/gallery/<slug>.png`
-from the heading's slug. That markdown is the source, not a transcription: to change an
-example, edit its code block and re-run. Each block is run as a function body with the
-library as its one argument, so it takes what it needs from `consolepro` and a
-block that reaches for a tag it did not name fails the run rather than quietly
-working.
+The first two get their snippets from `tools/screenshots.ts` itself, except the hero, which is composed from gallery examples: `HERO` names them by slug, each one runs in its own scope, and the shot is written to `docs/images/hero.png`. It has no dark twin, because the examples pick their colours against a light console.
 
-A run rewrites every image in the target directory. Panel-framed shots include the
-prompt's blinking caret, so files whose content didn't change still come back modified,
-by a few dozen pixels. Revert the ones you didn't mean to touch, so a diff only carries
-what actually moved.
+`--gallery` reads `docs/gallery.md`, one snippet per `##` heading, and writes `docs/images/gallery/<slug>.png` from the heading's slug. That markdown is the source, not a transcription: to change an example, edit its code block and re-run. Each block is run as a function body with the library as its one argument, so it takes what it needs from `consolepro`, and a block that reaches for a tag it did not name fails the run rather than quietly working.
+
+A run rewrites every image in the target directory. Panel-framed shots include the prompt's blinking caret, so files whose content didn't change still come back modified, by a few dozen pixels. Revert the ones you didn't mean to touch, so a diff only carries what actually moved.
 
 ## Reference
 
-`docs/chrome-custom-formatters.md` — the Chrome team's spec. Read it before assuming what
-the API supports. It's from 2016, so it's authoritative on the format but silent on how
-devtools actually behaves today.
+`docs/chrome-custom-formatters.md` is the Chrome team's spec. Read it before assuming what the API supports. It is from 2016, so it is authoritative on the format but silent on how devtools actually behaves today.
 
-## The archive
+`docs/html-rendering.md` quotes the HTML Standard's default styles verbatim. It is where composed elements get their values, so nothing there should be rounded or paraphrased.
 
-`archive/` holds a previous, working implementation with tests. It's a **reference only**
-— useful because the problem is already solved once and the tests capture real behaviour.
-Not happy with how it turned out, and not tied to its API.
+## Not in git
 
-It is deliberately **not in git** — untracked and gitignored, so a fresh clone won't have
-it. Never commit it.
+`archive/` holds a previous, working implementation with tests. It is a reference only, useful because the problem is already solved once and its tests capture real behaviour. Not happy with how it turned out, and not tied to its API.
+
+`EXAMPLES.md` is a scratchpad for designing usage in plain JS before writing it.
+
+Both are untracked and gitignored, so a fresh clone won't have them. Never commit either, and nothing in `src/` may reference them. Restate a rule where it's implemented instead.
