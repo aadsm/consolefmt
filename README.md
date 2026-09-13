@@ -2,7 +2,7 @@
 
 Rich, styled content in the Chrome and Edge devtools console.
 
-![A devtools console showing four things consolepro drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png)
+![A devtools console showing four things consolepro drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png?framed)
 
 Every one of those is a `console.log`, and there are plenty more in the [gallery](docs/gallery.md).
 
@@ -65,12 +65,12 @@ Both builds are minified, and their sourcemaps carry the TypeScript, so consolep
 For every HTML tag consolepro provides a function that returns an object the console renders as that element:
 
 ```js
-import { div, span } from "consolepro";
+const { span } = consolepro;
 
 console.log(span({ color: "crimson", fontWeight: "bold" }, "hello"));
 ```
 
-![A devtools console: span({ color: "crimson", fontWeight: "bold" }, "hello") typed at the prompt, and the word hello printed back in bold crimson](docs/images/hello.png)
+![The word hello printed in bold crimson in the devtools console](docs/images/hello.png?framed)
 
 A call takes a plain object of CSS properties first, then its children. Anything else in first position is a child too, so `span("hello")` works without passing an empty object first.
 
@@ -79,6 +79,8 @@ A call takes a plain object of CSS properties first, then its children. Anything
 Every argument after the attributes is a child, and a child can be another element. That is how a message becomes more than a line.
 
 ```js
+const { div } = consolepro;
+
 console.log(
   div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
         background: "#fdf6f6", color: "#5a2f2f" },
@@ -95,6 +97,8 @@ console.log(
 Wrap a structure in a function and you have an element of your own, usable like any other.
 
 ```js
+const { span } = consolepro;
+
 const badge = (text, color) => span({
   color: "white", background: color, fontWeight: "bold",
   padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
@@ -118,6 +122,13 @@ const head = box.extend({ fontWeight: "bold" });
 An object inside a message stays live. It is a reference to the real thing rather than a snapshot of its text, so you can open it in the console and walk it. It arrives collapsed, as `▸ Object`.
 
 ```js
+const { div, span } = consolepro;
+
+const badge = (text, color) => span({
+  color: "white", background: color, fontWeight: "bold",
+  padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
+}, text);
+
 const order = { id: 8812, total: 42.5, items: ["hat", "scarf"] };
 
 console.log(
@@ -139,6 +150,7 @@ An object in the *first* argument is read as attributes. Pass empty attributes t
 `grid` is a thin layer over `display: grid`, for building tables whose cells span. The formatters API renders `table`, `tr` and `td`, but ignores `colspan` and `rowspan`, so a real table cannot span its cells.
 
 ```js
+const { grid } = consolepro;
 const { row, cell } = grid;
 const box = cell.extend({ padding: "3px 10px", background: "white" });
 const head = box.extend({ fontWeight: "bold", background: "#f4f4f4" });

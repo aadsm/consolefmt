@@ -10,7 +10,7 @@ Every image is the output of the code above it, captured from a real console.
 
 Ordinary logging, as you'd leave it in an app. Each line is one capsule in three parts: what happened, what it touched, and what it cost. `console.group` nests the calls under the navigation that caused them, and the cart prints as a card with the live object still inside it.
 
-![](images/gallery/session-log.png)
+![](images/gallery/session-log.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -102,7 +102,7 @@ console.groupEnd();
 
 A frame's width is its share of its parent, so nesting does the arithmetic.
 
-![](images/gallery/flame-graph.png)
+![](images/gallery/flame-graph.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -147,7 +147,7 @@ console.log(div(label("profile · 420ms"),
 
 210 divs in a column-flowing grid.
 
-![](images/gallery/contribution-heatmap.png)
+![](images/gallery/contribution-heatmap.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -189,7 +189,7 @@ console.log(div(label("commits · last 30 weeks"),
 
 Drawn on a canvas at 2x, then handed over as a data URI.
 
-![](images/gallery/line-chart.png)
+![](images/gallery/line-chart.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -249,7 +249,7 @@ console.log(div(label("signups · monthly"), picture(chart, 340, 130)));
 
 The third image is computed from the other two at log time.
 
-![](images/gallery/visual-diff.png)
+![](images/gallery/visual-diff.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -312,7 +312,7 @@ console.log(div(label("visual diff · 412 pixels changed"),
 
 Bars placed by start time, split into timing phases.
 
-![](images/gallery/network-waterfall.png)
+![](images/gallery/network-waterfall.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -378,7 +378,7 @@ console.log(div(label("network · 7 requests · 620ms"),
 
 Nested flex, with flex-grow carrying the byte count.
 
-![](images/gallery/bundle-treemap.png)
+![](images/gallery/bundle-treemap.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -431,7 +431,7 @@ console.log(div(label("bundle · 468 kB"),
 
 A four-column grid and a small tokeniser.
 
-![](images/gallery/code-diff.png)
+![](images/gallery/code-diff.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -489,7 +489,7 @@ console.log(div(label("cacheFirst.js · 2 additions · 2 deletions"),
 
 The merge elbow is one border-radius on two borders.
 
-![](images/gallery/commit-graph.png)
+![](images/gallery/commit-graph.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -552,7 +552,7 @@ console.log(div(label("git log --graph"),
 
 Arrowheads are clip-path triangles; a self-call is three borders and one rounded corner.
 
-![](images/gallery/sequence-diagram.png)
+![](images/gallery/sequence-diagram.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -647,7 +647,7 @@ console.log(div(label("fetch /img/dog.svg · 214ms"),
 
 Means as dots, 95% intervals as bars, coloured by whether they clear zero.
 
-![](images/gallery/experiment-results.png)
+![](images/gallery/experiment-results.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -702,7 +702,7 @@ console.log(div(label("conversion lift · 95% ci"),
 
 Four nested rings, each with its values on its own edges.
 
-![](images/gallery/box-model.png)
+![](images/gallery/box-model.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -745,7 +745,7 @@ console.log(div(label("div.card · box model"),
 
 Canvas: mirrored bars, a tinted selection, a playhead with a triangle cap.
 
-![](images/gallery/audio-waveform.png)
+![](images/gallery/audio-waveform.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -798,7 +798,7 @@ console.log(div(label("intro.mp3 · 0:12 selected"),
 
 An optional branch is an arc that leaves the line and rejoins it.
 
-![](images/gallery/railroad-diagram.png)
+![](images/gallery/railroad-diagram.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -865,7 +865,7 @@ console.log(div(plain("/^(https?):\\/\\/([\\w.-]+)(\\/\\S*)?$/"),
 
 Depth as indentation, cost as a bar on one shared scale.
 
-![](images/gallery/query-plan.png)
+![](images/gallery/query-plan.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -913,7 +913,7 @@ console.log(div(label("explain analyze · 18.4ms"),
 
 Why an object is still alive, with the leak flagged.
 
-![](images/gallery/retainer-path.png)
+![](images/gallery/retainer-path.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -963,7 +963,7 @@ console.log(div(label("retainers of tile #482 · 4.2 MB"),
 
 Computes WCAG contrast from the hex and grades itself.
 
-![](images/gallery/colour-palette.png)
+![](images/gallery/colour-palette.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1027,7 +1027,7 @@ console.log(div(label("brand palette · wcag · lg = large text only"),
 
 perspective on the parent, translateZ on each layer, and a layer is however many rectangles it actually covers.
 
-![](images/gallery/compositing-layers.png)
+![](images/gallery/compositing-layers.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1085,7 +1085,7 @@ console.log(div(label("compositing layers · " + layers.length),
 
 One linear-gradient with hard stops at the executed byte ranges. Note the explicit width: a console message shrinks to its content, so 1fr has nothing to expand into.
 
-![](images/gallery/coverage-ribbons.png)
+![](images/gallery/coverage-ribbons.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1129,7 +1129,7 @@ console.log(div(label("code coverage · 4 files"),
 
 Paint progress with the web-vitals marks underneath.
 
-![](images/gallery/filmstrip.png)
+![](images/gallery/filmstrip.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1165,7 +1165,7 @@ console.log(div(label("filmstrip · lcp at 980ms"),
 
 The reset edge is two strokes and one rounded corner; the active state carries a shadow ring.
 
-![](images/gallery/state-machine.png)
+![](images/gallery/state-machine.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1274,7 +1274,7 @@ console.log(div(label("upload machine · loading"),
 
 Canvas measures the real font, and the rules are placed over live HTML text at those offsets.
 
-![](images/gallery/font-specimen.png)
+![](images/gallery/font-specimen.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1320,7 +1320,7 @@ console.log(div(label("georgia · 44px"),
 
 Numbered line badges, a dashed outline with outline-offset, and the track sizes underneath.
 
-![](images/gallery/grid-overlay.png)
+![](images/gallery/grid-overlay.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1366,7 +1366,7 @@ console.log(div(label("grid overlay · 3 × 2"),
 
 Trend, colour and bar heights all derived from each row's own series.
 
-![](images/gallery/sparkline-table.png)
+![](images/gallery/sparkline-table.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1426,7 +1426,7 @@ console.log(div(label("page views · last 8 weeks"),
 
 A panel rather than a line: a conic-gradient donut, three figures on one baseline, and a table with the bars drawn into the cells.
 
-![](images/gallery/service-worker-dashboard.png)
+![](images/gallery/service-worker-dashboard.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1515,7 +1515,7 @@ console.log(div({ display: "inline-block", background: "white",
 
 Two objects in, classified same / changed / added at log time.
 
-![](images/gallery/header-diff.png)
+![](images/gallery/header-diff.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1576,7 +1576,7 @@ console.log(div(label("response headers · before → after"),
 
 Bar size from duration; anything over 200ms labels itself in red. Absolutely-positioned children need an ancestor with real height, or they escape the box.
 
-![](images/gallery/interaction-timeline.png)
+![](images/gallery/interaction-timeline.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1622,7 +1622,7 @@ console.log(div(label("interactions · inp 212ms"),
 
 Tasks sized by duration against a frame budget drawn once.
 
-![](images/gallery/event-loop-trace.png)
+![](images/gallery/event-loop-trace.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1670,7 +1670,7 @@ console.log(div(label("event loop · 1 long task"),
 
 Edges trim to each node's box, so vertical and diagonal links work too. The cycle is traced in red.
 
-![](images/gallery/dependency-graph.png)
+![](images/gallery/dependency-graph.png?framed)
 
 <details>
 <summary>Code</summary>
@@ -1736,7 +1736,7 @@ console.log(div(label("imports · 1 cycle"),
 
 One div per value, coloured by magnitude — a buffer you can look at.
 
-![](images/gallery/typed-array-bitmap.png)
+![](images/gallery/typed-array-bitmap.png?framed)
 
 <details>
 <summary>Code</summary>

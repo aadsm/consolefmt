@@ -5,8 +5,9 @@
  *     node tools/screenshots.ts --dark     # docs/images/dark/
  *     node tools/screenshots.ts --gallery  # docs/images/gallery/, from docs/gallery.md
  *
- * Each snippet is run in a page that has consolepro loaded, and what the
- * console printed for it is written out as a cropped PNG.
+ * Every example comes from the markdown that shows it, so the code a reader
+ * sees is the code that ran. Each one is run in a page that has consolepro
+ * loaded, and what the console printed for it is written out as a PNG.
  */
 
 import { createServer } from "node:http";
@@ -19,134 +20,62 @@ import { openDevtoolsConsole } from "./devtools-console.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-interface Snippet {
+interface Scene {
   /** Run in the page. */
-  code?: string;
-  /** Then typed at the console prompt, so the shot shows the exchange. */
-  prompt?: string;
+  code: string;
   /** Framed with the panel around it, rather than cropped to the message. */
-  panel?: boolean;
+  panel: boolean;
 }
 
-/** The snippets. Each one is a console message the README points at. */
-const snippets: Record<string, Snippet> = {
-  // An expression, not a console.log: the console prints the value with no
-  // `undefined` after it, which is what makes this one worth the prompt.
-  hello: {
-    panel: true,
-    // A line typed at the prompt can't import, so the shot needs the tags
-    // already in scope, as they'd be on a page that had imported them.
-    code: `Object.assign(window, consolepro);`,
-    prompt: `span({ color: "crimson", fontWeight: "bold" }, "hello")`,
-  },
-
-  badges: { code: `
-    const { span } = consolepro;
-
-    const badge = (text, color) => span({
-      color: "white", background: color, fontWeight: "bold",
-      padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
-    }, text);
-
-    console.log(span(badge("READY", "#27ae60"), " server listening on :3000"));
-    console.log(span(badge("SLOW", "#e67e22"), " GET /api/orders took 2.4s"));
-  ` },
-
-  nested: { code: `
-    const { div } = consolepro;
-
-    console.log(
-      div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
-            background: "#fdf6f6", color: "#5a2f2f" },
-        div({ fontWeight: "bold" }, "payment declined"),
-        div({ marginTop: "4px" }, "card expired, retrying in 30s"),
-      ),
-    );
-  ` },
-
-  grid: { code: `
-    const { grid } = consolepro;
-
-    const { row, cell } = grid;
-    const box = cell.extend({ padding: "3px 10px", background: "white" });
-    const head = box.extend({ fontWeight: "bold", background: "#f4f4f4" });
-    const heat = (n) => box({ textAlign: "right",
-      background: "rgb(220," + (255 - n * 2) + "," + (255 - n * 2) + ")" }, n + "ms");
-
-    console.log(
-      grid({ gap: "1px", background: "#ddd", border: "1px solid #ddd" },
-        row(head("endpoint"), head("p50"), head("p95"), head("p99")),
-        row(box("/api/users"), heat(12), heat(48), heat(91)),
-        row(box("/api/orders"), heat(20), heat(33), heat(70)),
-        row(box({ colspan: 3, fontWeight: "bold", textAlign: "right" }, "worst"), heat(91)),
-      ),
-    );
-  ` },
-
-  card: { code: `
-    const { div, span } = consolepro;
-
-    const badge = (text, color) => span({
-      color: "white", background: color, fontWeight: "bold",
-      padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
-    }, text);
-
-    const order = { id: 8812, total: 42.5, items: ["hat", "scarf"] };
-
-    console.log(
-      // A hard-coded background needs a hard-coded colour with it: text
-      // inherits the console's, which flips with the devtools theme.
-      div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
-            background: "#fdf6f6", color: "#5a2f2f" },
-        div(badge("FAIL", "#c0392b"),
-            span({ fontWeight: "bold" }, " payment declined")),
-        div({ marginTop: "4px" }, span({ color: "#8a8a8a" }, "order "), order),
-      ),
-    );
-  ` },
-};
+/** A block of its own, so a scene's declarations can't reach the next one. */
+function block(code: string): string {
+  return `{\n${code}\n}`;
+}
 
 /**
- * The gallery's snippets live in its own markdown, one per `##` heading, so
- * the page a reader sees is the same text that gets run. Keyed by the slug
- * the heading makes, which is also the name its image is written under.
+ * The scenes a markdown file describes. A `##` section holding both a code
+ * block and an image is one: the code is the section's first block, and the
+ * image names the shot. A section with no image is prose, and a block after
+ * the image is commentary rather than an example.
+ *
+ * The markdown is the source, not a transcription: to change an example, edit
+ * its code block and re-run. Each block runs on its own, so it has to take the
+ * names it uses from `consolepro` rather than from the block before it.
+ *
+ * `?framed` on the image path asks for the panel around the shot. It is the
+ * image that is framed, so the document it appears in is what says so.
  */
-async function galleryBlocks(): Promise<Record<string, string>> {
-  const markdown = await readFile(join(root, "docs/gallery.md"), "utf8");
-  const blocks: Record<string, string> = {};
+async function scenesFrom(file: string): Promise<Record<string, Scene>> {
+  const markdown = await readFile(join(root, file), "utf8");
+  const scenes: Record<string, Scene> = {};
 
-  for (const [, title, code] of markdown.matchAll(
-    /^## (.+)$[\s\S]*?```js\n([\s\S]*?)```/gm,
-  )) {
-    blocks[title!.toLowerCase().replaceAll(" ", "-")] = code ?? "";
+  for (const section of markdown.split(/^## /m).slice(1)) {
+    const code = /```js\n([\s\S]*?)^```/m.exec(section)?.[1];
+    const image = /!\[[^\]]*\]\([^)]*\/([\w-]+)\.png(\?framed)?\)/.exec(section);
+    const name = image?.[1];
+    if (code !== undefined && name !== undefined) {
+      scenes[name] = { code, panel: image?.[2] !== undefined };
+    }
   }
-  return blocks;
-}
-
-async function galleryScenes(): Promise<Record<string, Snippet>> {
-  return Object.fromEntries(
-    Object.entries(await galleryBlocks())
-      .map(([slug, code]) => [slug, { code, panel: true }]),
-  );
+  return scenes;
 }
 
 /**
  * The README's hero, named by the gallery slugs it's made of rather than
- * written out again, so the two can't drift apart.
+ * written out again, so the two can't drift apart. Each example keeps its own
+ * block: they all declare a `label`, and several share names for their helpers.
  */
 const HERO = ["flame-graph", "event-loop-trace", "compositing-layers", "railroad-diagram"];
 
-async function heroScene(): Promise<Snippet> {
-  const blocks = await galleryBlocks();
+async function heroScene(): Promise<Scene> {
+  const gallery = await scenesFrom("docs/gallery.md");
 
-  // Each example gets its own scope: they all declare a `label`, and several
-  // share names for their helpers.
   const code = HERO.map((slug) => {
-    const block = blocks[slug];
-    if (block === undefined) {
+    const scene = gallery[slug];
+    if (scene === undefined) {
       throw new Error(`consolepro: the gallery has no "${slug}" for the hero.`);
     }
-    return `(() => {\n${block}\n})();`;
+    return block(scene.code);
   }).join("\n");
 
   return { code, panel: true };
@@ -163,8 +92,11 @@ async function main(): Promise<void> {
   // console, so on a dark one the layer legend goes dark on dark. It needs the
   // examples reworked, not the theme flipped.
   const scenes = gallery
-    ? await galleryScenes()
-    : { ...(dark ? {} : { hero: await heroScene() }), ...snippets };
+    ? await scenesFrom("docs/gallery.md")
+    : {
+      ...(dark ? {} : { hero: await heroScene() }),
+      ...(await scenesFrom("README.md")),
+    };
   const server = await serveSource();
   const console_ = await openDevtoolsConsole({
     url: server.url,
@@ -172,9 +104,9 @@ async function main(): Promise<void> {
   });
 
   try {
-    for (const [name, { code = "", prompt, panel = false }] of Object.entries(scenes)) {
+    for (const [name, { code, panel }] of Object.entries(scenes)) {
       const path = join(outputDir, `${name}.png`);
-      await console_.capture(code, path, { ...(prompt === undefined ? {} : { prompt }), panel });
+      await console_.capture(block(code), path, { panel });
       process.stdout.write(`${path}\n`);
     }
   } finally {

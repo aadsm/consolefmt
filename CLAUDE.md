@@ -48,11 +48,13 @@ node tools/screenshots.ts --dark     # docs/images/dark/
 node tools/screenshots.ts --gallery  # docs/images/gallery/
 ```
 
-The first two get their snippets from `tools/screenshots.ts` itself, except the hero, which is composed from gallery examples: `HERO` names them by slug, each one runs in its own scope, and the shot is written to `docs/images/hero.png`. It has no dark twin, because the examples pick their colours against a light console.
+Every shot comes from the markdown that shows it: `README.md` for the first two, `docs/gallery.md` for `--gallery`. A `##` section holding both a code block and an image is a shot. The code is the section's first block, the image names the file, and `?framed` on the image path puts the devtools panel around it instead of cropping to the message. A section with no image is prose, and a block after the image is commentary.
 
-`--gallery` reads `docs/gallery.md`, one snippet per `##` heading, and writes `docs/images/gallery/<slug>.png` from the heading's slug. That markdown is the source, not a transcription: to change an example, edit its code block and re-run. Each block is run as a function body with the library as its one argument, so it takes what it needs from `consolepro`, and a block that reaches for a tag it did not name fails the run rather than quietly working.
+That markdown is the source, not a transcription: to change an example, edit its code block and re-run. Each block runs inside a block of its own, so it has to take the names it uses from `consolepro` rather than from the block before it, and one that reaches for a tag it did not name fails the run rather than quietly working.
 
-A run rewrites every image in the target directory. Panel-framed shots include the prompt's blinking caret, so files whose content didn't change still come back modified, by a few dozen pixels. Revert the ones you didn't mean to touch, so a diff only carries what actually moved.
+The hero is the exception, composed rather than parsed: `HERO` names gallery examples by slug, each keeps its own scope, and the shot is written to `docs/images/hero.png`. It has no dark twin, because the examples pick their colours against a light console.
+
+A run rewrites every image in the target directory, but the caret is stopped mid-frame before each shot, so a file only comes back modified when its content actually moved. Two runs of the same commit produce identical bytes.
 
 ## Reference
 
