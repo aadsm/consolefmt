@@ -1,20 +1,14 @@
 # Gallery
 
-The consolepro library can draw more than text. Flame graphs, network
-waterfalls, a layer inspector tilted in 3D, a state machine, a bitmap of a
-typed array. All of it powered by `console.log` and devtools' Custom Formatters.
+The consolepro library can draw more than text. Flame graphs, network waterfalls, a layer inspector tilted in 3D, a state machine, a bitmap of a typed array. All of it powered by `console.log` and devtools' Custom Formatters.
 
-Each example takes the names it uses from `consolepro`, the module once you have
-imported it.
+Each example takes the names it uses from `consolepro`, the module once you have imported it.
 
 Every image is the output of the code above it, captured from a real console.
 
 ## Session log
 
-Ordinary logging, as you'd leave it in an app. Each line is one capsule in
-three parts: what happened, what it touched, and what it cost. `console.group`
-nests the calls under the navigation that caused them, and the cart prints as
-a card with the live object still inside it.
+Ordinary logging, as you'd leave it in an app. Each line is one capsule in three parts: what happened, what it touched, and what it cost. `console.group` nests the calls under the navigation that caused them, and the cart prints as a card with the live object still inside it.
 
 ![](images/gallery/session-log.png)
 
@@ -1031,8 +1025,7 @@ console.log(div(label("brand palette · wcag · lg = large text only"),
 
 ## Compositing layers
 
-perspective on the parent, translateZ on each layer, and a layer is however
-many rectangles it actually covers.
+perspective on the parent, translateZ on each layer, and a layer is however many rectangles it actually covers.
 
 ![](images/gallery/compositing-layers.png)
 
@@ -1431,8 +1424,7 @@ console.log(div(label("page views · last 8 weeks"),
 
 ## Service worker dashboard
 
-A panel rather than a line: a conic-gradient donut, three figures on one
-baseline, and a table with the bars drawn into the cells.
+A panel rather than a line: a conic-gradient donut, three figures on one baseline, and a table with the bars drawn into the cells.
 
 ![](images/gallery/service-worker-dashboard.png)
 
