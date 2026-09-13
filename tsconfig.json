@@ -10,7 +10,11 @@
     "noEmit": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    // Node runs these files directly by stripping the types, so anything that
+    // would need real emit (enum, namespace, parameter properties, decorators)
+    // has to fail here rather than at runtime.
+    "erasableSyntaxOnly": true
   },
   "include": ["src", "test", "tools"]
 }

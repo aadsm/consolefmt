@@ -35,6 +35,31 @@ consolepro leverages that API for logging rather than for data types. You build 
 
 Custom formatters ship in Chrome and Edge, but behind a setting. Once per browser: open devtools, then **Settings → Console → Enable custom formatters**, and reload the page. Nothing renders until you do.
 
+## Install
+
+```
+npm install consolepro
+```
+
+Or from a CDN, without a build step:
+
+```html
+<script type="module">
+  import { div, span } from "https://cdn.jsdelivr.net/npm/consolepro@0.0.0/dist/consolepro.esm.js";
+</script>
+```
+
+There is a classic script build too, which puts everything on a `consolepro` global:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/consolepro@0.0.0/dist/consolepro.js"></script>
+<script>
+  console.log(consolepro.span({ color: "crimson" }, "hello"));
+</script>
+```
+
+Both builds are minified, and their sourcemaps carry the TypeScript, so consolepro's own frames read as source in devtools.
+
 ## Your first message
 
 For every HTML tag consolepro provides a function that returns an object the console renders as that element:
