@@ -62,8 +62,6 @@ A run rewrites every image in the target directory. Panel-framed shots include t
 
 ## Not in git
 
-`archive/` holds a previous, working implementation with tests. It is a reference only, useful because the problem is already solved once and its tests capture real behaviour. Not happy with how it turned out, and not tied to its API.
+`local/` is ignored whole, so a fresh clone won't have any of it. Never commit anything from it, and nothing in `src/` may reference it. Restate a rule where it's implemented instead. Being ignored is not the same as being safe: `git clean -xdf` would take the lot.
 
-`EXAMPLES.md` is a scratchpad for designing usage in plain JS before writing it.
-
-Both are untracked and gitignored, so a fresh clone won't have them. Never commit either, and nothing in `src/` may reference them. Restate a rule where it's implemented instead.
+`local/archive/` holds a previous, working implementation with tests. It is a reference only, useful because the problem is already solved once and its tests capture real behaviour. Not happy with how it turned out, and not tied to its API.

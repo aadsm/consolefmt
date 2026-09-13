@@ -1,6 +1,5 @@
 node_modules/
-archive/
-EXAMPLES.md
+local/
 .vscode/
 .claude/settings.local.json
 .claude/worktrees/
