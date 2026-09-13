@@ -52,6 +52,18 @@ const snippets: Record<string, Snippet> = {
     console.log(span(badge("SLOW", "#e67e22"), " GET /api/orders took 2.4s"));
   ` },
 
+  nested: { code: `
+    const { div } = consolepro;
+
+    console.log(
+      div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
+            background: "#fdf6f6", color: "#5a2f2f" },
+        div({ fontWeight: "bold" }, "payment declined"),
+        div({ marginTop: "4px" }, "card expired, retrying in 30s"),
+      ),
+    );
+  ` },
+
   grid: { code: `
     const { grid } = consolepro;
 
@@ -74,6 +86,11 @@ const snippets: Record<string, Snippet> = {
   card: { code: `
     const { div, span } = consolepro;
 
+    const badge = (text, color) => span({
+      color: "white", background: color, fontWeight: "bold",
+      padding: "1px 7px", borderRadius: "10px", fontSize: "11px",
+    }, text);
+
     const order = { id: 8812, total: 42.5, items: ["hat", "scarf"] };
 
     console.log(
@@ -81,8 +98,9 @@ const snippets: Record<string, Snippet> = {
       // inherits the console's, which flips with the devtools theme.
       div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
             background: "#fdf6f6", color: "#5a2f2f" },
-        div({ fontWeight: "bold" }, "payment declined"),
-        div(span({ color: "#8a8a8a" }, "order "), order),
+        div(badge("FAIL", "#c0392b"),
+            span({ fontWeight: "bold" }, " payment declined")),
+        div({ marginTop: "4px" }, span({ color: "#8a8a8a" }, "order "), order),
       ),
     );
   ` },
