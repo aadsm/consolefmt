@@ -318,6 +318,7 @@ async function capture(
   // the right edge. Here that's the harness's own eval frame, so it says
   // nothing — and in a panel-framed shot there's no crop to leave it out of.
   await hideSourceLinks(frontend);
+  await stopCaretBlinking(frontend);
   await frontend.evaluate(() => new Promise(requestAnimationFrame));
 
   const clip = panel ? await panelBox(frontend) : await messagesBox(frontend);
@@ -341,6 +342,23 @@ async function typeAtPrompt(frontend: Page, line: string): Promise<void> {
   // anyone else. Balanced brackets survive its auto-closing.
   await frontend.keyboard.type(line.trim(), { delay: 8 });
   await frontend.keyboard.press("Enter");
+}
+
+/**
+ * The prompt's caret blinks, so the same snippet shot twice gives two
+ * different pictures and every panel-framed file comes back modified. Dropping
+ * the animation leaves the caret drawn, in the same phase every time.
+ *
+ * The animation is on the layer the cursor sits in, which fades between full
+ * and zero opacity. The cursor element inside it never changes.
+ */
+async function stopCaretBlinking(page: Page): Promise<void> {
+  await page.evaluate(
+    inConsole(
+      `messages.forEach((layer) => { layer.style.animation = "none"; })`,
+      "cm-cursorLayer",
+    ),
+  );
 }
 
 async function hideSourceLinks(page: Page): Promise<void> {
