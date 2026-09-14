@@ -37,6 +37,8 @@ Custom formatters work in Chromium browsers and Firefox, but behind a setting. O
 
 ## Install
 
+From npm:
+
 ```
 npm install consolefmt
 ```
@@ -49,11 +51,11 @@ Or from a CDN, without a build step:
 
 ```html
 <script type="module">
-  import { div, span } from "https://cdn.jsdelivr.net/npm/consolefmt@1/dist/consolefmt.esm.js";
+  import consolefmt from "https://cdn.jsdelivr.net/npm/consolefmt@1/dist/consolefmt.esm.js";
 </script>
 ```
 
-There is a classic script build too, which puts everything on a `consolefmt` global:
+Or as a classic script, which defines a `consolefmt` global:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/consolefmt@1/dist/consolefmt.js"></script>
