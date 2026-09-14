@@ -1,6 +1,6 @@
 # consolepro
 
-Renders rich, styled content into the Chrome/Edge devtools console by registering a Custom Formatter (`window.devtoolsFormatters`).
+Renders rich, styled content into the devtools console by registering a Custom Formatter (`window.devtoolsFormatters`). Chromium browsers and Firefox support them, each behind a setting.
 
 ## What's here
 

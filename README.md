@@ -1,6 +1,6 @@
 # consolepro
 
-Rich, styled content in the Chrome and Edge devtools console.
+Rich, styled content in the devtools console.
 
 ![A devtools console showing four things consolepro drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png?framed)
 
@@ -33,7 +33,7 @@ consolepro leverages that API for logging rather than for data types. You build 
 
 ## Enable custom formatters
 
-Custom formatters ship in Chrome and Edge, but behind a setting. Once per browser: open devtools, then **Settings → Console → Enable custom formatters**, and reload the page. Nothing renders until you do.
+Custom formatters work in Chromium browsers and Firefox, but behind a setting. Once per browser: open devtools, then **Settings → Enable custom formatters**, and reload the page. Nothing renders until you do.
 
 ## Install
 
