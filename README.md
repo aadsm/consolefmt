@@ -4,7 +4,7 @@ Rich, styled content in the devtools console.
 
 ![A devtools console showing four things consolepro drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png?framed)
 
-Every one of those is a `console.log`, and there are plenty more in the [gallery](docs/gallery.md).
+Every one of those is a `console.log`, and there are plenty more in the [gallery](docs/gallery.md). Run them in your own console on the [playground](https://aadsm.github.io/consolepro/).
 
 ## Origin story
 
@@ -173,7 +173,7 @@ console.log(
 
 ## Where to go next
 
-Thirty worked examples in the [gallery](docs/gallery.md), from a session log to a flame graph to a layer inspector tilted in 3D. Every one of them is a `console.log`.
+Thirty worked examples in the [gallery](docs/gallery.md), from a session log to a flame graph to a layer inspector tilted in 3D. Every one of them is a `console.log`, and the [playground](https://aadsm.github.io/consolepro/) runs any of them in your own console without installing anything.
 
 ## Licence
 
