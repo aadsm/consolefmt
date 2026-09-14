@@ -45,14 +45,14 @@ Or from a CDN, without a build step:
 
 ```html
 <script type="module">
-  import { div, span } from "https://cdn.jsdelivr.net/npm/consolepro@0.0.0/dist/consolepro.esm.js";
+  import { div, span } from "https://cdn.jsdelivr.net/npm/consolepro@1/dist/consolepro.esm.js";
 </script>
 ```
 
 There is a classic script build too, which puts everything on a `consolepro` global:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/consolepro@0.0.0/dist/consolepro.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/consolepro@1/dist/consolepro.js"></script>
 <script>
   console.log(consolepro.span({ color: "crimson" }, "hello"));
 </script>
