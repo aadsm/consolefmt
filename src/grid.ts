@@ -29,7 +29,7 @@ import type { Child, PresentChild } from "./elements.ts";
 export const row = div.extend({ display: "contents" });
 
 /**
- * A cell. `colspan` and `rowspan` are consolepro's own attributes rather than
+ * A cell. `colspan` and `rowspan` are consolefmt's own attributes rather than
  * CSS, named after the table equivalents they stand in for, and become the
  * grid properties that do the same job.
  */
@@ -86,7 +86,7 @@ function columnsIn(children: readonly Child[]): number {
 
   if (first === undefined) {
     throw new Error(
-      "consolepro: grid counts its columns from the first row, so it needs a " +
+      "consolefmt: grid counts its columns from the first row, so it needs a " +
         "row — or pass gridTemplateColumns and it won't count.",
     );
   }

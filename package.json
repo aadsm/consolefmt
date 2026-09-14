@@ -1,5 +1,5 @@
 {
-  "name": "consolepro",
+  "name": "consolefmt",
   "version": "1.0.0",
   "description": "Rich, styled content in the devtools console, via Custom Formatters.",
   "keywords": [
@@ -19,11 +19,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aadsm/consolepro.git"
+    "url": "git+https://github.com/aadsm/consolefmt.git"
   },
-  "homepage": "https://github.com/aadsm/consolepro#readme",
+  "homepage": "https://github.com/aadsm/consolefmt#readme",
   "bugs": {
-    "url": "https://github.com/aadsm/consolepro/issues"
+    "url": "https://github.com/aadsm/consolefmt/issues"
   },
   "type": "module",
   "files": [
@@ -32,14 +32,14 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "default": "./dist/consolepro.esm.js"
+      "default": "./dist/consolefmt.esm.js"
     }
   },
-  "main": "./dist/consolepro.esm.js",
-  "module": "./dist/consolepro.esm.js",
+  "main": "./dist/consolefmt.esm.js",
+  "module": "./dist/consolefmt.esm.js",
   "types": "./dist/types/index.d.ts",
-  "unpkg": "./dist/consolepro.js",
-  "jsdelivr": "./dist/consolepro.js",
+  "unpkg": "./dist/consolefmt.js",
+  "jsdelivr": "./dist/consolefmt.js",
   "sideEffects": false,
   "scripts": {
     "check": "tsc --noEmit",

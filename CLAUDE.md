@@ -1,4 +1,4 @@
-# consolepro
+# consolefmt
 
 Renders rich, styled content into the devtools console by registering a Custom Formatter (`window.devtoolsFormatters`). Chromium browsers and Firefox support them, each behind a setting.
 
@@ -34,7 +34,7 @@ Node runs the TypeScript directly by stripping the types, so `src/` has no compi
 
 ## The build
 
-`tools/build.ts` writes `dist/`, which is gitignored and built at publish time by `prepublishOnly`. esbuild emits `consolepro.js`, a classic script defining a `consolepro` global, and `consolepro.esm.js`, the module. tsc emits the declarations into `dist/types/`.
+`tools/build.ts` writes `dist/`, which is gitignored and built at publish time by `prepublishOnly`. esbuild emits `consolefmt.js`, a classic script defining a `consolefmt` global, and `consolefmt.esm.js`, the module. tsc emits the declarations into `dist/types/`.
 
 The README pins its CDN URLs to a version. `npm version` runs `tools/sync-readme-version.ts`, which rewrites them and stages the file so it rides in the version commit.
 
@@ -65,7 +65,7 @@ node tools/screenshots.ts --gallery  # docs/images/gallery/
 
 Every shot comes from the markdown that shows it: `README.md` for the first two, `docs/gallery.md` for `--gallery`. A `##` section holding both a code block and an image is a shot. The code is the section's first block, the image names the file, and `?framed` on the image path puts the devtools panel around it instead of cropping to the message. A section with no image is prose, and a block after the image is commentary.
 
-That markdown is the source, not a transcription: to change an example, edit its code block and re-run. Each block runs inside a block of its own, so it has to take the names it uses from `consolepro` rather than from the block before it, and one that reaches for a tag it did not name fails the run rather than quietly working.
+That markdown is the source, not a transcription: to change an example, edit its code block and re-run. Each block runs inside a block of its own, so it has to take the names it uses from `consolefmt` rather than from the block before it, and one that reaches for a tag it did not name fails the run rather than quietly working.
 
 The hero is the exception, composed rather than parsed: `HERO` names gallery examples by slug, each keeps its own scope, and the shot is written to `docs/images/hero.png`. It has no dark twin, because the examples pick their colours against a light console.
 

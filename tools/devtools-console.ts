@@ -113,7 +113,7 @@ export interface DevtoolsConsole {
    * printed for it, cropped to the messages themselves.
    *
    * The snippet is a function body, called with whatever the page left on
-   * `globalThis.consolepro` as its `consolepro` argument.
+   * `globalThis.consolefmt` as its `consolefmt` argument.
    */
   capture(snippet: string, screenshotPath: string, options?: CaptureOptions): Promise<void>;
   close(): Promise<void>;
@@ -264,12 +264,12 @@ async function capture(
       try {
         // A snippet is a function body given the library as its one argument,
         // which is how the examples are written: they take what they need from
-        // `consolepro` rather than reaching for globals. Indirect eval so it
+        // `consolefmt` rather than reaching for globals. Indirect eval so it
         // compiles in global scope, and the call frame keeps its declarations
         // from colliding with the next snippet's.
-        const body = (0, eval)(`(function (consolepro) {${code}})`) as
+        const body = (0, eval)(`(function (consolefmt) {${code}})`) as
           (library: unknown) => void;
-        body((globalThis as { consolepro?: unknown }).consolepro);
+        body((globalThis as { consolefmt?: unknown }).consolefmt);
         return null;
       } catch (error) {
         return String(error);
@@ -300,7 +300,7 @@ async function capture(
   const printed = inConsole(
     `(() => {
       const now = performance.now();
-      const settling = (window.__consoleproSettling ??= { count: -1, since: now });
+      const settling = (window.__consolefmtSettling ??= { count: -1, since: now });
       if (settling.count !== messages.length) {
         settling.count = messages.length;
         settling.since = now;
@@ -334,7 +334,7 @@ async function capture(
 async function typeAtPrompt(frontend: Page, line: string): Promise<void> {
   const prompt = await frontend.$("pierce/#console-prompt");
   if (prompt === null) {
-    throw new Error("consolepro: no console prompt to type into.");
+    throw new Error("consolefmt: no console prompt to type into.");
   }
 
   await prompt.click();

@@ -29,7 +29,7 @@ export function block(code: string): string {
  *
  * The markdown is the source, not a transcription: to change an example, edit
  * its code block and re-run. Each block runs on its own, so it has to take the
- * names it uses from `consolepro` rather than from the block before it.
+ * names it uses from `consolefmt` rather than from the block before it.
  *
  * `?framed` on the image path asks for the panel around the shot. It is the
  * image that is framed, so the document it appears in is what says so.

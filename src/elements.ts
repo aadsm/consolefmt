@@ -80,7 +80,7 @@ function isPresent(child: Child): child is PresentChild {
 function assertNativeTagName(name: string): asserts name is NativeTagName {
   if (!(nativeTagNames as readonly string[]).includes(name)) {
     throw new Error(
-      `consolepro: <${name}> isn't rendered by the Custom Formatters API. ` +
+      `consolefmt: <${name}> isn't rendered by the Custom Formatters API. ` +
         `Compose it from ${nativeTagNames.join(", ")}.`,
     );
   }

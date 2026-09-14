@@ -13,7 +13,7 @@ import { execFileSync } from "node:child_process";
 const [from = "", version = "", keyword = ""] = process.argv.slice(2);
 
 if (version === "") {
-  throw new Error("consolepro: changelog needs a version.");
+  throw new Error("consolefmt: changelog needs a version.");
 }
 
 const git = (...args: string[]): string =>

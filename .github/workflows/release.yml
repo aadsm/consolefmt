@@ -92,7 +92,7 @@ jobs:
           esac
 
       # Prereleases go out under the `rc` dist-tag so that a plain
-      # `npm install consolepro` keeps resolving to the latest stable release.
+      # `npm install consolefmt` keeps resolving to the latest stable release.
       - name: Work out the dist-tag
         run: |
           VERSION="$(node -p "require('./package.json').version")"

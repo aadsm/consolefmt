@@ -1,10 +1,10 @@
-# consolepro
+# consolefmt
 
 Rich, styled content in the devtools console.
 
-![A devtools console showing four things consolepro drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png?framed)
+![A devtools console showing four things consolefmt drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png?framed)
 
-Every one of those is a `console.log`, and there are plenty more in the [gallery](docs/gallery.md). Run them in your own console on the [playground](https://aadsm.github.io/consolepro/).
+Every one of those is a `console.log`, and there are plenty more in the [gallery](docs/gallery.md). Run them in your own console on the [playground](https://aadsm.github.io/consolefmt/).
 
 ## Origin story
 
@@ -27,7 +27,7 @@ The sizes would be wrong anyway: a `%c` only honours a handful of CSS properties
 
 Enter [custom formatters][spec], an API that shipped with Chrome in 2015 and lets a value say how it should appear in the console. A ClojureScript map or an Immutable.js list can print as itself instead of as its internals. A formatter returns an HTML element structure, without the `%c` restrictions.
 
-consolepro leverages that API for logging rather than for data types. You build a message out of HTML and CSS that renders the way you expect it to.
+consolefmt leverages that API for logging rather than for data types. You build a message out of HTML and CSS that renders the way you expect it to.
 
 [spec]: docs/chrome-custom-formatters.md
 
@@ -38,38 +38,38 @@ Custom formatters work in Chromium browsers and Firefox, but behind a setting. O
 ## Install
 
 ```
-npm install consolepro
+npm install consolefmt
 ```
 
 ```js
-import consolepro from "consolepro";
+import consolefmt from "consolefmt";
 ```
 
 Or from a CDN, without a build step:
 
 ```html
 <script type="module">
-  import { div, span } from "https://cdn.jsdelivr.net/npm/consolepro@1/dist/consolepro.esm.js";
+  import { div, span } from "https://cdn.jsdelivr.net/npm/consolefmt@1/dist/consolefmt.esm.js";
 </script>
 ```
 
-There is a classic script build too, which puts everything on a `consolepro` global:
+There is a classic script build too, which puts everything on a `consolefmt` global:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/consolepro@1/dist/consolepro.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/consolefmt@1/dist/consolefmt.js"></script>
 <script>
-  console.log(consolepro.span({ color: "crimson" }, "hello"));
+  console.log(consolefmt.span({ color: "crimson" }, "hello"));
 </script>
 ```
 
-Both builds are minified, and their sourcemaps carry the TypeScript, so consolepro's own frames read as source in devtools.
+Both builds are minified, and their sourcemaps carry the TypeScript, so consolefmt's own frames read as source in devtools.
 
 ## Your first message
 
-For every HTML tag consolepro provides a function that returns an object the console renders as that element:
+For every HTML tag consolefmt provides a function that returns an object the console renders as that element:
 
 ```js
-const { span } = consolepro;
+const { span } = consolefmt;
 
 console.log(span({ color: "crimson", fontWeight: "bold" }, "hello"));
 ```
@@ -83,7 +83,7 @@ A call takes a plain object of CSS properties first, then its children. Anything
 Every argument after the attributes is a child, and a child can be another element. That is how a message becomes more than a line.
 
 ```js
-const { div } = consolepro;
+const { div } = consolefmt;
 
 console.log(
   div({ padding: "6px 10px", borderLeft: "3px solid #c0392b",
@@ -101,7 +101,7 @@ console.log(
 Wrap a structure in a function and you have an element of your own, usable like any other.
 
 ```js
-const { span } = consolepro;
+const { span } = consolefmt;
 
 const badge = (text, color) => span({
   color: "white", background: color, fontWeight: "bold",
@@ -126,7 +126,7 @@ const head = box.extend({ fontWeight: "bold" });
 An object inside a message stays live. It is a reference to the real thing rather than a snapshot of its text, so you can open it in the console and walk it. It arrives collapsed, as `▸ Object`.
 
 ```js
-const { div, span } = consolepro;
+const { div, span } = consolefmt;
 
 const badge = (text, color) => span({
   color: "white", background: color, fontWeight: "bold",
@@ -154,7 +154,7 @@ An object in the *first* argument is read as attributes. Pass empty attributes t
 `grid` is a thin layer over `display: grid`, for building tables whose cells span. The formatters API renders `table`, `tr` and `td`, but ignores `colspan` and `rowspan`, so a real table cannot span its cells.
 
 ```js
-const { grid } = consolepro;
+const { grid } = consolefmt;
 const { row, cell } = grid;
 const box = cell.extend({ padding: "3px 10px", background: "white" });
 const head = box.extend({ fontWeight: "bold", background: "#f4f4f4" });
@@ -177,7 +177,7 @@ console.log(
 
 ## Where to go next
 
-Thirty worked examples in the [gallery](docs/gallery.md), from a session log to a flame graph to a layer inspector tilted in 3D. Every one of them is a `console.log`, and the [playground](https://aadsm.github.io/consolepro/) runs any of them in your own console without installing anything.
+Thirty worked examples in the [gallery](docs/gallery.md), from a session log to a flame graph to a layer inspector tilted in 3D. Every one of them is a `console.log`, and the [playground](https://aadsm.github.io/consolefmt/) runs any of them in your own console without installing anything.
 
 ## Licence
 

@@ -6,7 +6,7 @@
  *     node tools/screenshots.ts --gallery  # docs/images/gallery/, from docs/gallery.md
  *
  * Every example comes from the markdown that shows it, so the code a reader
- * sees is the code that ran. Each one is run in a page that has consolepro
+ * sees is the code that ran. Each one is run in a page that has consolefmt
  * loaded, and what the console printed for it is written out as a PNG.
  */
 
@@ -34,7 +34,7 @@ async function heroScene(): Promise<Scene> {
   const code = HERO.map((slug) => {
     const scene = gallery[slug];
     if (scene === undefined) {
-      throw new Error(`consolepro: the gallery has no "${slug}" for the hero.`);
+      throw new Error(`consolefmt: the gallery has no "${slug}" for the hero.`);
     }
     return block(scene.code);
   }).join("\n");
@@ -77,17 +77,17 @@ async function main(): Promise<void> {
 }
 
 /**
- * A page with consolepro loaded, and `src/` served as the ES modules the
+ * A page with consolefmt loaded, and `src/` served as the ES modules the
  * browser wants. There's no build step, so the TypeScript is transpiled on the
  * way out — the `.ts` import specifiers stay as written and resolve back here.
  */
 async function serveSource(): Promise<{ url: string; close(): void }> {
   const page = `<!doctype html>
     <meta charset="utf-8">
-    <title>consolepro</title>
+    <title>consolefmt</title>
     <script type="module">
-      import * as consolepro from "/src/index.ts";
-      window.consolepro = consolepro;
+      import * as consolefmt from "/src/index.ts";
+      window.consolefmt = consolefmt;
     </script>`;
 
   const server = createServer(async (request, response) => {

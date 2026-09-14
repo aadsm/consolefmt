@@ -2,8 +2,8 @@
  * Builds the distributable: two bundles of the same source, their sourcemaps,
  * and the type declarations.
  *
- * `consolepro.esm.js` is the module, for anything that imports. `consolepro.js`
- * is a classic script defining a `consolepro` global, for the contexts that
+ * `consolefmt.esm.js` is the module, for anything that imports. `consolefmt.js`
+ * is a classic script defining a `consolefmt` global, for the contexts that
  * aren't module contexts: a plain `<script src>`, a paste into the devtools
  * console, a devtools snippet.
  *
@@ -29,15 +29,15 @@ const common: BuildOptions = {
   minify: true,
   sourcemap: true,
   // Survives minification, so the licence and version stay visible on a CDN.
-  banner: { js: `/*! consolepro v${pkg.version} | MIT | github.com/aadsm/consolepro */` },
+  banner: { js: `/*! consolefmt v${pkg.version} | MIT | github.com/aadsm/consolefmt */` },
 };
 
-await build({ ...common, format: "esm", outfile: "dist/consolepro.esm.js" });
+await build({ ...common, format: "esm", outfile: "dist/consolefmt.esm.js" });
 await build({
   ...common,
   format: "iife",
-  globalName: "consolepro",
-  outfile: "dist/consolepro.js",
+  globalName: "consolefmt",
+  outfile: "dist/consolefmt.js",
 });
 
 execFileSync("npx", ["tsc", "-p", "tsconfig.build.json"], {

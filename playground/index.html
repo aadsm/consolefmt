@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>consolepro playground</title>
+<title>consolefmt playground</title>
 <!-- Inline, so the page never asks for a favicon it doesn't have: a 404 in the
      console is the last thing a page about the console should print. -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='1' y='13' font-family='monospace' font-size='13' fill='%23c0392b'>&gt;</text></svg>">
@@ -74,7 +74,7 @@
   button:hover { border-color: currentColor; }
 </style>
 
-<h1>consolepro</h1>
+<h1>consolefmt</h1>
 <p class="lede">Rich, styled content in the devtools console.</p>
 
 <p id="status" class="waiting">
@@ -92,18 +92,18 @@
 </figure>
 
 <script type="module">
-  import * as consolepro from "./consolepro.esm.js";
+  import * as consolefmt from "./consolefmt.esm.js";
   import { examples } from "./examples.js";
 
   // At the prompt too, so a visitor can type `span("hi")` after clicking.
-  Object.assign(window, consolepro, { consolepro });
+  Object.assign(window, consolefmt, { consolefmt });
 
   const status = document.querySelector("#status");
   const list = document.querySelector("#examples");
 
-  const greeting = () => consolepro.span(
+  const greeting = () => consolefmt.span(
     { color: "#c0392b", fontWeight: "bold" },
-    'consolepro is ready. Type span("hi") here, or click an example on the page.',
+    'consolefmt is ready. Type span("hi") here, or click an example on the page.',
   );
 
   // Building one installs the library's formatter, which is the thing to watch:
@@ -220,9 +220,9 @@
   const run = (name, code) => {
     try {
       // The same contract the docs use: a function body handed the library.
-      new Function("consolepro", code)(consolepro);
+      new Function("consolefmt", code)(consolefmt);
     } catch (error) {
-      console.error(`consolepro: ${name} failed.`, error);
+      console.error(`consolefmt: ${name} failed.`, error);
     }
   };
 

@@ -12,9 +12,9 @@ export { element, Element } from "./elements.ts";
 export { grid } from "./grid.ts";
 
 /**
- * Everything again, as one object, so `import consolepro from "consolepro"`
+ * Everything again, as one object, so `import consolefmt from "consolefmt"`
  * binds what the examples destructure. A page that loads the classic build
- * gets the same shape from the `consolepro` global.
+ * gets the same shape from the `consolefmt` global.
  */
 import * as tags from "./tags.ts";
 import { element, Element } from "./elements.ts";

@@ -22,9 +22,9 @@ const site = join(root, "_site");
 await rm(site, { recursive: true, force: true });
 await mkdir(site, { recursive: true });
 
-for (const file of ["dist/consolepro.esm.js", "dist/consolepro.esm.js.map"]) {
+for (const file of ["dist/consolefmt.esm.js", "dist/consolefmt.esm.js.map"]) {
   await copyFile(join(root, file), join(site, basename(file))).catch(() => {
-    throw new Error("consolepro: run `npm run build` first, the page serves the built library.");
+    throw new Error("consolefmt: run `npm run build` first, the page serves the built library.");
   });
 }
 

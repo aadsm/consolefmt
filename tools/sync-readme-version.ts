@@ -19,7 +19,7 @@ const tag = major >= 1 ? String(major) : version;
 const readme = new URL("README.md", root);
 const source = await readFile(readme, "utf8");
 const rewritten = source.replaceAll(
-  /(cdn\.jsdelivr\.net\/npm\/consolepro@)[^/]+\//g,
+  /(cdn\.jsdelivr\.net\/npm\/consolefmt@)[^/]+\//g,
   `$1${tag}/`,
 );
 

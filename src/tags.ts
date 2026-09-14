@@ -165,13 +165,13 @@ export const img: Tag = asTag((...args) => {
   const { src, ...style } = attributes;
 
   if (src === undefined) {
-    throw new Error("consolepro: img needs a src.");
+    throw new Error("consolefmt: img needs a src.");
   }
 
   const missing = (["width", "height"] as const).filter((name) => !(name in style));
   if (missing.length > 0) {
     throw new Error(
-      `consolepro: img needs a ${missing.join(" and a ")} — a background image ` +
+      `consolefmt: img needs a ${missing.join(" and a ")} — a background image ` +
         `can't size itself, so without one it renders nothing.`,
     );
   }
