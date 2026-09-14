@@ -1,0 +1,51 @@
+name: Playground
+
+# Manual only until Pages is switched on, with its source set to GitHub
+# Actions. Until then the deploy step has nothing to deploy to and every push
+# would fail. Add the push trigger back once it is live:
+#
+#   push:
+#     branches: [main]
+#     paths: [src/**, docs/gallery.md, playground/**, tools/build-playground.ts,
+#             tools/markdown-scenes.ts, tools/highlight.ts, .github/workflows/pages.yml]
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time, and never cancel one half-done.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      # Puppeteer is only for the screenshots, and its Chrome download is the
+      # slowest part of an install that doesn't need it.
+      - run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+      - run: npm run playground
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

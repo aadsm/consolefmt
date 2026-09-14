@@ -47,6 +47,7 @@
     "build": "node tools/build.ts",
     "version": "node tools/sync-readme-version.ts && git add README.md",
     "prepublishOnly": "npm run check && npm test && npm run build",
+    "playground": "npm run build && node tools/build-playground.ts",
     "screenshots": "node tools/screenshots.ts"
   },
   "devDependencies": {

@@ -1,0 +1,252 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>consolepro playground</title>
+<!-- Inline, so the page never asks for a favicon it doesn't have: a 404 in the
+     console is the last thing a page about the console should print. -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='1' y='13' font-family='monospace' font-size='13' fill='%23c0392b'>&gt;</text></svg>">
+
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font: 15px/1.6 system-ui, sans-serif;
+    max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem;
+  }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+  .lede { margin: 0 0 1.5rem; opacity: .75; }
+  #status {
+    padding: .75rem 1rem; border-radius: 6px; margin: 0 0 1.5rem;
+    border: 1px solid; font-weight: 500;
+  }
+  /* Opening devtools is the normal path, so it reads as information. The
+     browser that cannot render at all is the only warning here. */
+  #status.waiting { border-color: #94a3b8; background: #f8fafc; color: #334155; }
+  #status.waiting::before { content: "ⓘ "; }
+  #status.unsupported { border-color: #7f1d1d; background: #fbf1f1; color: #5b1f1f; }
+  #status.unsupported::before { content: "⚠ "; }
+  #status.ready { border-color: #27ae60; background: #eaf7f0; color: #17603a; }
+  kbd {
+    font: inherit; font-weight: 600; background: rgba(127, 127, 127, .18);
+    border-radius: 4px; padding: 0 .3em;
+  }
+  #examples {
+    display: grid; gap: 1rem; margin: 1.25rem 0 0;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    align-items: start;
+  }
+  .card {
+    display: block; width: 100%; padding: 0; overflow: hidden; text-align: left;
+  }
+  /* A fixed box, but the shot inside it keeps its own proportions. */
+  .card img {
+    display: block; width: 100%; height: 7rem;
+    object-fit: contain; object-position: center;
+    background: rgba(127, 127, 127, .08);
+  }
+  .card span {
+    display: block; padding: .5rem .7rem;
+    border-top: 1px solid rgba(127, 127, 127, .3);
+  }
+  #shown { grid-column: 1 / -1; margin: .25rem 0 .75rem; }
+  #shown figcaption { margin: 0 0 .5rem; opacity: .75; }
+  #shown pre {
+    margin: 0; padding: 1rem; border-radius: 6px; overflow: auto; max-height: 26rem;
+    background: rgba(127, 127, 127, .12); font-size: 13px; line-height: 1.5;
+  }
+  /* Keyword, string, number, regular expression, comment. */
+  .k { color: #b02a37; }
+  .s { color: #116329; }
+  .n { color: #8250df; }
+  .r { color: #0550ae; }
+  .c { color: #6b7280; font-style: italic; }
+  @media (prefers-color-scheme: dark) {
+    .k { color: #ff7b72; }
+    .s { color: #7ee787; }
+    .n { color: #d2a8ff; }
+    .r { color: #79c0ff; }
+    .c { color: #9aa4b2; }
+  }
+  button {
+    font: inherit; padding: .4rem .8rem; border-radius: 6px;
+    border: 1px solid rgba(127, 127, 127, .45); background: transparent;
+    color: inherit; cursor: pointer;
+  }
+  button:hover { border-color: currentColor; }
+</style>
+
+<h1>consolepro</h1>
+<p class="lede">Rich, styled content in the devtools console.</p>
+
+<p id="status" class="waiting">
+  Open devtools to enable custom formatters: <kbd id="shortcut">F12</kbd>.
+  These examples are rendered in the console.
+</p>
+
+<p>Every example below is one <code>console.log</code>.</p>
+
+<div id="examples"></div>
+
+<figure id="shown" hidden>
+  <figcaption><strong id="shown-name"></strong></figcaption>
+  <pre id="shown-code"></pre>
+</figure>
+
+<script type="module">
+  import * as consolepro from "./consolepro.esm.js";
+  import { examples } from "./examples.js";
+
+  // At the prompt too, so a visitor can type `span("hi")` after clicking.
+  Object.assign(window, consolepro, { consolepro });
+
+  const status = document.querySelector("#status");
+  const list = document.querySelector("#examples");
+
+  const greeting = () => consolepro.span(
+    { color: "#c0392b", fontWeight: "bold" },
+    'consolepro is ready. Type span("hi") here, or click an example on the page.',
+  );
+
+  // Building one installs the library's formatter, which is the thing to watch:
+  // devtools calls it only when custom formatters are on, and it calls it here,
+  // in the page. So a greeting that renders is the answer to whether they are.
+  greeting();
+  const [formatter] = window.devtoolsFormatters ?? [];
+  if (formatter !== undefined) {
+    const header = formatter.header;
+    formatter.header = function (value) {
+      status.textContent = "Custom formatters are on. Click an example.";
+      status.className = "ready";
+      return header.call(this, value);
+    };
+  }
+
+  // Plain text, so it renders whether or not custom formatters are on, and
+  // conditional, because the page cannot tell which it is: nothing the console
+  // renders calls back into the page except a formatter, and that only exists
+  // once the setting is on.
+  // `%c`, the thing this library exists to replace, doing the one job it is
+  // good at: a message that renders whether or not custom formatters are on.
+  // Conditional, because the page cannot tell which it is.
+  //
+  // Drawn as an SVG behind a single space, which is the only way to get real
+  // typography and a rounded card out of `%c`. The padding is what gives the
+  // space its size: half the picture on each side.
+  // Custom formatters are a devtools feature, so nothing in the page can ask
+  // whether this browser has them: assigning `devtoolsFormatters` succeeds
+  // everywhere. Chromium is the one thing that can be told apart honestly,
+  // through `userAgentData`, which Firefox and Safari have never shipped.
+  // The shortcut is worth getting right for the machine in front of you:
+  // F12 does not open devtools on a Mac. `userAgentData.platform` where it
+  // exists, the deprecated `platform` where it does not.
+  const mac = /mac/i.test(
+    navigator.userAgentData?.platform ?? navigator.platform ?? navigator.userAgent,
+  );
+  if (mac) document.querySelector("#shortcut").textContent = "⌘ ⌥ I";
+
+  const chromium = "userAgentData" in navigator;
+  const supported = chromium || navigator.userAgent.includes("Firefox");
+
+  const notice = supported
+    ? {
+      width: chromium ? 490 : 560,
+      fill: "#334155",
+      ink: { icon: "#94a3b8", sub: "#cbd5e1" },
+      // A cog, because there is a setting to go and change.
+      icon: "&#9881;",
+      head: "Seeing plain objects instead of elements?",
+      // The same setting, in a different group: Firefox files it under
+      // Advanced settings, Chromium under Console.
+      path: `Settings → ${chromium ? "Console" : "Advanced settings"}`
+        + " → Enable custom formatters",
+      tail: ", then reload.",
+    }
+    : {
+      width: 490,
+      // Maroon rather than slate: this one is a dead end, not an instruction.
+      // Its greys are warmed to match, or they read blue against it.
+      fill: "#7f1d1d",
+      ink: { icon: "#d9a7a7", sub: "#f0d9d9" },
+      // Not a cog: there is nothing here to switch on.
+      icon: "&#9888;",
+      head: "This browser can't render these examples",
+      path: "",
+      tail: "Custom formatters only work in Chromium browsers and Firefox.",
+    };
+
+  if (!supported) {
+    status.textContent = `${notice.head}. ${notice.tail}`;
+    status.className = "unsupported";
+  }
+
+  const entity = (text) =>
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/→/g, "&#8594;");
+
+  // Drawn as an SVG behind a single space, which is the only way to get real
+  // typography and a rounded card out of `%c`. The padding is what gives the
+  // space its size: half the picture on each side.
+  const HEIGHT = 76;
+  const card = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${notice.width}" height="${HEIGHT}">`,
+    `<rect width="${notice.width}" height="${HEIGHT}" rx="10" fill="${notice.fill}"/>`,
+    '<text x="26" y="45" text-anchor="middle" font-family="system-ui,sans-serif"'
+      + ` font-size="28" fill="${notice.ink.icon}">${notice.icon}</text>`,
+    '<text x="50" y="33" font-family="system-ui,sans-serif" font-size="14"'
+      + ` font-weight="600" fill="#ffffff">${entity(notice.head)}</text>`,
+    `<text x="50" y="55" font-family="system-ui,sans-serif" font-size="13" fill="${notice.ink.sub}">`
+      + `<tspan font-style="italic">${entity(notice.path)}</tspan>`
+      + `<tspan>${entity(notice.tail)}</tspan></text>`,
+    "</svg>",
+  ].join("");
+
+  console.log(
+    "%c ",
+    `font-size: 0; line-height: 0; padding: ${HEIGHT / 2}px ${notice.width / 2}px;`
+      + ` background: url("data:image/svg+xml,${encodeURIComponent(card)}") no-repeat;`
+      + ` background-size: ${notice.width}px ${HEIGHT}px`,
+  );
+
+  console.log(greeting());
+
+  const shown = document.querySelector("#shown");
+
+  /** The code that just ran, so the console output has its source beside it. */
+  const show = (label, html) => {
+    document.querySelector("#shown-name").textContent = label;
+    // Built by tools/highlight.ts, from this same code.
+    document.querySelector("#shown-code").innerHTML = html;
+    shown.hidden = false;
+  };
+
+  const run = (name, code) => {
+    try {
+      // The same contract the docs use: a function body handed the library.
+      new Function("consolepro", code)(consolepro);
+    } catch (error) {
+      console.error(`consolepro: ${name} failed.`, error);
+    }
+  };
+
+  const cards = [];
+
+  /** However many the grid is showing at this width. */
+  const columns = () =>
+    getComputedStyle(list).gridTemplateColumns.split(" ").length;
+
+  for (const { name, label, code, html } of examples) {
+    const card = document.createElement("button");
+    card.className = "card";
+    card.innerHTML = `<img loading="lazy" alt="" src="examples/${name}.png"><span></span>`;
+    card.querySelector("span").textContent = label;
+    card.onclick = () => {
+      run(name, code);
+      show(label, html);
+      // Under the whole row the card is in. Straight after the card would
+      // break its row, since the code spans every column.
+      const next = (Math.floor(cards.indexOf(card) / columns()) + 1) * columns();
+      if (next < cards.length) cards[next].before(shown);
+      else list.append(shown);
+    };
+    cards.push(card);
+    list.append(card);
+  }
+</script>

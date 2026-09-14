@@ -4,3 +4,4 @@ local/
 .claude/settings.local.json
 .claude/worktrees/
 dist/
+_site/

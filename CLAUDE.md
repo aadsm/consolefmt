@@ -38,6 +38,19 @@ Node runs the TypeScript directly by stripping the types, so `src/` has no compi
 
 The README pins its CDN URLs to a version. `npm version` runs `tools/sync-readme-version.ts`, which rewrites them and stages the file so it rides in the version commit.
 
+## The playground
+
+`playground/index.html` is the page GitHub Pages serves. It asks the visitor to turn custom formatters on, then gives them a button per gallery example. The banner can tell whether the setting is on rather than just asking: devtools calls the formatter in the page, so the page sees the call happen and says so.
+
+```
+npm run playground             # builds _site/
+npm run playground -- --serve  # and serves it on localhost:8080
+```
+
+`_site/` holds the page, the built library beside it, and the gallery's examples as a module. Its examples come from `docs/gallery.md` through `tools/markdown-scenes.ts`, the same parser the screenshots use, and run the same way, so the page and the images can't disagree.
+
+`.github/workflows/pages.yml` builds and deploys on a push to main. Pages has to be set to the GitHub Actions source once, in the repo settings, and nothing built is committed.
+
 ## The screenshots
 
 Every image in `README.md` and `docs/gallery.md` is a real devtools console, driven headlessly by `tools/screenshots.ts`. It uses Puppeteer's bundled Chrome rather than whatever is installed, so a given commit renders the same images years later. Everything devtools-specific lives behind `openDevtoolsConsole` in `tools/devtools-console.ts`.
