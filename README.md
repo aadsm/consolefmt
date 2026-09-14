@@ -41,6 +41,10 @@ Custom formatters work in Chromium browsers and Firefox, but behind a setting. O
 npm install consolepro
 ```
 
+```js
+import consolepro from "consolepro";
+```
+
 Or from a CDN, without a build step:
 
 ```html

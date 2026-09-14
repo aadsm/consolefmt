@@ -11,6 +11,17 @@ export * from "./tags.ts";
 export { element, Element } from "./elements.ts";
 export { grid } from "./grid.ts";
 
+/**
+ * Everything again, as one object, so `import consolepro from "consolepro"`
+ * binds what the examples destructure. A page that loads the classic build
+ * gets the same shape from the `consolepro` global.
+ */
+import * as tags from "./tags.ts";
+import { element, Element } from "./elements.ts";
+import { grid } from "./grid.ts";
+
+export default { ...tags, element, Element, grid };
+
 export type { Attributes, Child, NativeTagName, Style } from "./elements.ts";
 export type { Tag } from "./tags.ts";
 export type { Grid } from "./grid.ts";
