@@ -7,7 +7,7 @@ name: Playground
 #   push:
 #     branches: [main]
 #     paths: [src/**, docs/gallery.md, playground/**, tools/build-playground.ts,
-#             tools/markdown-scenes.ts, tools/highlight.ts, .github/workflows/pages.yml]
+#             tools/markdown-scenes.ts, tools/highlight.ts, .github/workflows/playground.yml]
 on:
   workflow_dispatch:
 

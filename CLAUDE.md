@@ -49,7 +49,7 @@ npm run playground -- --serve  # and serves it on localhost:8080
 
 `_site/` holds the page, the built library beside it, and the gallery's examples as a module. Its examples come from `docs/gallery.md` through `tools/markdown-scenes.ts`, the same parser the screenshots use, and run the same way, so the page and the images can't disagree.
 
-`.github/workflows/pages.yml` builds and deploys on a push to main. Pages has to be set to the GitHub Actions source once, in the repo settings, and nothing built is committed.
+`.github/workflows/playground.yml` builds and deploys on a push to main. Pages has to be set to the GitHub Actions source once, in the repo settings, and nothing built is committed.
 
 ## The screenshots
 
