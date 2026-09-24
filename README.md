@@ -2,6 +2,13 @@
 
 Rich, styled content in the devtools console.
 
+> [!WARNING]
+> **Deprecated as of Chrome 153 (September 2026).** consolefmt is no longer maintained.
+>
+> For eleven years, custom formatters rendered inline styles verbatim, which is what let this library lay out real CSS in the console. Chrome 153 ended that. Formatter styles now go through the same CSS allowlist as `console.log("%c", …)`, which drops layout properties like `display`, so the gallery examples no longer render as shown.
+>
+> This is [intentional security hardening](https://github.com/ChromeDevTools/devtools-frontend/commit/7b4274862eca451a4ba82299cf271c8d7578cc37) against a page restyling the DevTools UI, with no opt-out (no flag, experiment, or policy). Firefox filters formatter styles too — with a [broader allowlist](https://firefox-source-docs.mozilla.org/devtools-user/custom_formatters/) that still drops grid, flex, and transforms.
+
 ![A devtools console showing four things consolefmt drew: a flame graph of a 420ms profile, an event loop trace with one task over the frame budget, five compositing layers tilted in 3D, and a railroad diagram of a URL regex](docs/images/hero.png?framed)
 
 Every one of those is a `console.log`, and there are plenty more in the [gallery](docs/gallery.md). Run them in your own console on the [playground](https://aadsm.github.io/consolefmt/).
